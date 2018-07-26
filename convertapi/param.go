@@ -44,7 +44,7 @@ func NewBoolParam(name string, value bool) *Param {
 
 func NewReaderParam(name string, value io.Reader, filename string, config *Config) (param *Param) {
 	if config == nil {
-		config = defaultConfig
+		config = Default
 	}
 	param = newParam(name)
 
@@ -58,8 +58,8 @@ func NewReaderParam(name string, value io.Reader, filename string, config *Confi
 			return
 		}
 
-		uploadURL := config.baseURL.ResolveReference(pathURL)
-		resp, err := config.httpClient.Post(uploadURL.String(), "application/octet-stream", value)
+		uploadURL := config.BaseURL.ResolveReference(pathURL)
+		resp, err := config.HttpClient.Post(uploadURL.String(), "application/octet-stream", value)
 		defer resp.Body.Close()
 		if err != nil {
 			param.reject(err)
@@ -98,11 +98,11 @@ func (this *Param) Delete(config *Config) (finishCh chan struct{}) {
 	go func() {
 		defer close(finishCh)
 		if config == nil {
-			config = defaultConfig
+			config = Default
 		}
 		if val, err := this.Value(); err == nil {
 			if _, err := url.ParseRequestURI(val); err == nil {
-				requestDelete(val, config.httpClient)
+				requestDelete(val, config.HttpClient)
 			}
 		}
 	}()

@@ -2,15 +2,15 @@ package main
 
 import (
 	"../convertapi"
-	"fmt"
 	"os"
 )
 
 func main() {
-	convertapi.Secret(os.Getenv("CONVERTAPI_SECRET"))
+	convertapi.Default.Secret = os.Getenv("CONVERTAPI_SECRET")
 	res := convertapi.Convert("pdf", "jpg", []*convertapi.Param{
 		convertapi.NewFilePathParam("file", "/tmp/test.pdf", nil),
 	}, nil)
 
-	fmt.Print(res.Response())
+	//fmt.Print(res.Response())
+	res.ToFilePath("/tmp/2222.jpg")
 }

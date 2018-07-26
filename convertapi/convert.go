@@ -9,7 +9,7 @@ func Convert(fromFormat string, toFormat string, params []*Param, config *Config
 	result = NewResult()
 	go func() {
 		if config == nil {
-			config = defaultConfig
+			config = Default
 		}
 		ignoreParams := []string{"storefile", "async", "jobid", "timeout"}
 		values := &url.Values{}
@@ -25,16 +25,17 @@ func Convert(fromFormat string, toFormat string, params []*Param, config *Config
 		}
 
 		query := url.Values{}
-		query.Add("secret", config.secret)
+		query.Add("secret", config.Secret)
+		query.Add("storefile", "true")
 		path := fmt.Sprintf("/convert/%s/to/%s?%s", fromFormat, toFormat, query.Encode())
 		pathURL, err := url.Parse(path)
 		if err != nil {
 			result.reject(err)
 			return
 		}
-		convertURL := config.baseURL.ResolveReference(pathURL)
+		convertURL := config.BaseURL.ResolveReference(pathURL)
 
-		result.start(convertURL.String(), values, config.httpClient)
+		result.start(convertURL.String(), values, config.HttpClient)
 	}()
 	return
 }

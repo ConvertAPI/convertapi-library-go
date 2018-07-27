@@ -23,7 +23,7 @@ func NewResult() *Result {
 }
 
 func (this *Result) start(url string, data *url.Values, client *http.Client) {
-	if resp, err := client.PostForm(url, *data); err == nil {
+	if resp, err := respExtractErr(client.PostForm(url, *data)); err == nil {
 		response := &response{}
 		json.NewDecoder(resp.Body).Decode(response)
 
@@ -36,39 +36,57 @@ func (this *Result) start(url string, data *url.Values, client *http.Client) {
 	}
 }
 
-func (this *Result) Cost() int {
+func (this *Result) Cost() (cost int, err error) {
 	<-this.waitCh
-	return this.response.ConversionCost
+	if this.response != nil {
+		cost = this.response.ConversionCost
+	}
+	return cost, this.err
 }
 
-func (this *Result) Files() []*ResFile {
+func (this *Result) Files() (files []*ResFile, err error) {
 	<-this.waitCh
-	return this.response.Files
+	if this.response != nil {
+		files = this.response.Files
+	}
+	return files, this.err
 }
 
 func (this *Result) Read(p []byte) (n int, err error) {
-	return this.Files()[0].Read(p)
+	files, err := this.Files()
+	if err == nil {
+		return files[0].Read(p)
+	}
+	return
 }
 
 func (this *Result) ToFile(file *os.File) (err error) {
-	return this.Files()[0].ToFile(file)
+	files, err := this.Files()
+	if err == nil {
+		return files[0].ToFile(file)
+	}
+	return
 }
 
-func (this *Result) ToPath(path string) (err error) {
-	if info, e := os.Stat(path); e == nil && info.IsDir() {
-		for _, file := range this.Files() {
-			if err = file.ToPath(path); err != nil {
-				return
-			}
+func (this *Result) ToPath(path string) (files []*os.File, errs []error) {
+	if resFiles, err := this.Files(); addErr(&errs, err) {
+		if !isDir(path) {
+			resFiles = []*ResFile{resFiles[0]}
+		}
+
+		for _, resFile := range resFiles {
+			file, err := resFile.ToPath(path)
+			files = append(files, file)
+			addErr(&errs, err)
 		}
 	}
-	return this.Files()[0].ToPath(path)
+	return
 }
 
-func (this *Result) Delete() (errArr []error) {
-	for _, file := range this.Files() {
-		if err := file.Delete(); err != nil {
-			errArr = append(errArr, err)
+func (this *Result) Delete() (errs []error) {
+	if files, err := this.Files(); addErr(&errs, err) {
+		for _, file := range files {
+			addErr(&errs, file.Delete())
 		}
 	}
 	return

@@ -92,19 +92,45 @@ func NewFilePathParam(name string, value string, config *Config) *Param {
 	}
 }
 
-func (this *Param) Value() (value string, err error) {
-	<-this.waitCh
-	return this.value[0], this.err
+func NewResultParam(name string, value *Result, config *Config) (param *Param) {
+	if config == nil {
+		config = Default
+	}
+	param = newParam(name)
+	param.client = config.HttpClient
+
+	go func() {
+		files, err := value.Files()
+		if err == nil {
+			var paths []string
+			for _, file := range files {
+				paths = append(paths, file.Url)
+			}
+			param.resolve(paths)
+		} else {
+			param.reject(err)
+		}
+	}()
+
+	return
 }
 
-func (this *Param) Delete() {
+func (this *Param) Values() (value []string, err error) {
+	<-this.waitCh
+	return this.value, this.err
+}
+
+func (this *Param) Delete() (errs []error) {
 	if this.client != nil {
-		if val, err := this.Value(); err == nil {
-			if _, err := url.ParseRequestURI(val); err == nil {
-				requestDelete(val, this.client)
+		if vals, err := this.Values(); addErr(&errs, err) {
+			for _, val := range vals {
+				if _, err = url.ParseRequestURI(val); addErr(&errs, err) {
+					addErr(&errs, requestDelete(val, this.client))
+				}
 			}
 		}
 	}
+	return
 }
 
 func (this *Param) resolve(value []string) {

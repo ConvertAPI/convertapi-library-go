@@ -3,6 +3,7 @@ package convertapi
 import (
 	"fmt"
 	"net/url"
+	"os"
 )
 
 func Convert(fromFormat string, toFormat string, params []*Param, config *Config) (result *Result) {
@@ -15,8 +16,14 @@ func Convert(fromFormat string, toFormat string, params []*Param, config *Config
 		values := &url.Values{}
 		for _, param := range params {
 			if !contains(ignoreParams, param.name) {
-				if val, err := param.Value(); err == nil {
-					values.Add(param.name, val)
+				if vals, err := param.Values(); err == nil {
+					if len(vals) == 1 {
+						values.Add(param.name, vals[0])
+					} else {
+						for i, val := range vals {
+							values.Add(fmt.Sprintf("%s[%d]", param.name, i), val)
+						}
+					}
 				} else {
 					result.reject(err)
 					return
@@ -37,5 +44,20 @@ func Convert(fromFormat string, toFormat string, params []*Param, config *Config
 
 		result.start(convertURL.String(), values, config.HttpClient)
 	}()
+	return
+}
+
+func ConvertPath(fromPath string, toPath string) (file *os.File, errs []error) {
+	res := Convert(pathExt(fromPath), pathExt(toPath), []*Param{
+		NewFilePathParam("file", fromPath, nil),
+	}, nil)
+
+	if addErr(&errs, res.err) {
+		if files, e := res.ToPath(toPath); e == nil {
+			file = files[0]
+		} else {
+			errs = e
+		}
+	}
 	return
 }

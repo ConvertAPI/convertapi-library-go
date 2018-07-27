@@ -35,14 +35,13 @@ func (this *ResFile) ToFile(file *os.File) (err error) {
 	return
 }
 
-func (this *ResFile) ToPath(path string) (err error) {
-	if info, err := os.Stat(path); err == nil && info.IsDir() {
+func (this *ResFile) ToPath(path string) (file *os.File, err error) {
+	if info, e := os.Stat(path); e == nil && info.IsDir() {
 		path = filepath.Join(path, this.FileName)
 	}
 
-	file, err := os.Create(path)
-	defer file.Close()
-	if err == nil {
+	if file, err = os.Create(path); err == nil {
+		defer file.Close()
 		err = this.ToFile(file)
 	}
 	return

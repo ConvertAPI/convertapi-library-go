@@ -12,5 +12,6 @@ func main() {
 	}, nil)
 
 	//fmt.Print(res.Response())
-	res.ToFilePath("/tmp/2222.jpg")
+	res.ToPath("/tmp/")
+	res.Delete()
 }

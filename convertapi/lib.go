@@ -4,10 +4,11 @@ import (
 	"net/http"
 )
 
-func requestDelete(url string, client *http.Client) {
+func requestDelete(url string, client *http.Client) (err error) {
 	if req, err := http.NewRequest(url, http.MethodDelete, nil); err == nil {
-		client.Do(req)
+		_, err = client.Do(req)
 	}
+	return
 }
 
 func contains(arr []string, str string) bool {

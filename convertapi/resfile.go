@@ -4,6 +4,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 )
 
 type ResFile struct {
@@ -34,11 +35,19 @@ func (this *ResFile) ToFile(file *os.File) (err error) {
 	return
 }
 
-func (this *ResFile) ToFilePath(path string) (err error) {
+func (this *ResFile) ToPath(path string) (err error) {
+	if info, err := os.Stat(path); err == nil && info.IsDir() {
+		path = filepath.Join(path, this.FileName)
+	}
+
 	file, err := os.Create(path)
 	defer file.Close()
 	if err == nil {
 		err = this.ToFile(file)
 	}
 	return
+}
+
+func (this *ResFile) Delete() error {
+	return requestDelete(this.Url, this.client)
 }

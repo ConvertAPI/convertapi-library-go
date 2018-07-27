@@ -54,8 +54,24 @@ func (this *Result) ToFile(file *os.File) (err error) {
 	return this.Files()[0].ToFile(file)
 }
 
-func (this *Result) ToFilePath(path string) (err error) {
-	return this.Files()[0].ToFilePath(path)
+func (this *Result) ToPath(path string) (err error) {
+	if info, e := os.Stat(path); e == nil && info.IsDir() {
+		for _, file := range this.Files() {
+			if err = file.ToPath(path); err != nil {
+				return
+			}
+		}
+	}
+	return this.Files()[0].ToPath(path)
+}
+
+func (this *Result) Delete() (errArr []error) {
+	for _, file := range this.Files() {
+		if err := file.Delete(); err != nil {
+			errArr = append(errArr, err)
+		}
+	}
+	return
 }
 
 func (this *Result) resolve(response *response) {

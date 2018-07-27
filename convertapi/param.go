@@ -3,13 +3,16 @@ package convertapi
 import (
 	"bytes"
 	"io"
+	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
 
 type Param struct {
+	client *http.Client
 	waitCh chan struct{}
 	err    error
 	name   string
@@ -17,7 +20,7 @@ type Param struct {
 }
 
 func newParam(name string) *Param {
-	return &Param{make(chan struct{}), nil, strings.ToLower(name), nil}
+	return &Param{nil, make(chan struct{}), nil, strings.ToLower(name), nil}
 }
 
 func newParamWithValueResolved(name string, value string) (param *Param) {
@@ -47,6 +50,7 @@ func NewReaderParam(name string, value io.Reader, filename string, config *Confi
 		config = Default
 	}
 	param = newParam(name)
+	param.client = config.HttpClient
 
 	go func() {
 		query := url.Values{}
@@ -75,7 +79,7 @@ func NewReaderParam(name string, value io.Reader, filename string, config *Confi
 }
 
 func NewFileParam(name string, value *os.File, config *Config) *Param {
-	return NewReaderParam(name, value, value.Name(), config)
+	return NewReaderParam(name, value, filepath.Base(value.Name()), config)
 }
 
 func NewFilePathParam(name string, value string, config *Config) *Param {
@@ -93,20 +97,14 @@ func (this *Param) Value() (value string, err error) {
 	return this.value[0], this.err
 }
 
-func (this *Param) Delete(config *Config) (finishCh chan struct{}) {
-	finishCh = make(chan struct{})
-	go func() {
-		defer close(finishCh)
-		if config == nil {
-			config = Default
-		}
+func (this *Param) Delete() {
+	if this.client != nil {
 		if val, err := this.Value(); err == nil {
 			if _, err := url.ParseRequestURI(val); err == nil {
-				requestDelete(val, config.HttpClient)
+				requestDelete(val, this.client)
 			}
 		}
-	}()
-	return
+	}
 }
 
 func (this *Param) resolve(value []string) {

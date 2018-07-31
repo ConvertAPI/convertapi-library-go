@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/ConvertAPI/convertapi-golang/pkg/convertapi"
 	"os"
 )
 

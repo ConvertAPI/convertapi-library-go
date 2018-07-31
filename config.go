@@ -1,4 +1,4 @@
-package convertapi_golang
+package convertapi
 
 import (
 	"net/http"

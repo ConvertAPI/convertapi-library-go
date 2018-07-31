@@ -1,4 +1,4 @@
-package convertapi
+package convertapi_golang
 
 import (
 	"bytes"

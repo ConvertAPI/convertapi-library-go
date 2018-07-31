@@ -14,8 +14,8 @@ type Config struct {
 }
 
 func newDefaultConfig() *Config {
-	url, _ := url.ParseRequestURI("https://v2.convertapi.com")
-	return &Config{"", url, http.DefaultClient}
+	baseUrl, _ := url.ParseRequestURI("https://v2.convertapi.com")
+	return &Config{"", baseUrl, http.DefaultClient}
 }
 
 func NewConfig(secret string, url *url.URL, transport *http.Transport) *Config {

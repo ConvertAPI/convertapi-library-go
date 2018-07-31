@@ -1,7 +1,7 @@
 package main
 
 import (
-	"../convertapi"
+	"../pkg/convertapi"
 	"fmt"
 	"os"
 )

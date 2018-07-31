@@ -1,7 +1,7 @@
 package main
 
 import (
-	"../convertapi"
+	"../pkg/convertapi"
 	"fmt"
 	"os"
 )
@@ -11,7 +11,7 @@ func main() {
 
 	fmt.Println("Creating PDF thumbnail")
 	extractRes := convertapi.Convert("pdf", "extract", []*convertapi.Param{
-		convertapi.NewFilePathParam("file", "test-files/test.pdf", nil),
+		convertapi.NewFilePathParam("file", "assets/test.pdf", nil),
 		convertapi.NewStringParam("pagerange", "1"),
 	}, nil)
 

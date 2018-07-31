@@ -1,7 +1,7 @@
 package main
 
 import (
-	"../convertapi"
+	"../pkg/convertapi"
 	"fmt"
 	"os"
 )
@@ -12,7 +12,7 @@ func main() {
 	fmt.Println("Converting PDF to JPG and compressing result files with ZIP")
 
 	jpgRes := convertapi.Convert("docx", "jpg", []*convertapi.Param{
-		convertapi.NewFilePathParam("file", "test-files/test.docx", nil),
+		convertapi.NewFilePathParam("file", "assets/test.docx", nil),
 	}, nil)
 
 	zipRes := convertapi.Convert("jpg", "zip", []*convertapi.Param{

@@ -15,15 +15,15 @@ type Config struct {
 
 func newDefaultConfig() *Config {
 	baseUrl, _ := url.ParseRequestURI("https://v2.convertapi.com")
-	return &Config{"", baseUrl, http.DefaultClient}
+	client := &http.Client{Transport: NewCaTransport(nil)}
+	return &Config{"", baseUrl, client}
 }
 
 func NewConfig(secret string, url *url.URL, transport *http.Transport) *Config {
 	if url == nil {
 		url = Default.BaseURL
 	}
-	if transport == nil {
-		transport = &http.Transport{}
-	}
-	return &Config{secret, url, &http.Client{Transport: transport}}
+
+	caTransport := NewCaTransport(transport)
+	return &Config{secret, url, &http.Client{Transport: caTransport}}
 }

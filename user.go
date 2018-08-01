@@ -30,6 +30,7 @@ func UserInfo(config *Config) (user *User, err error) {
 	userURL := config.BaseURL.ResolveReference(pathURL)
 	resp, err := respExtractErr(config.HttpClient.Get(userURL.String()))
 	if err == nil {
+		defer resp.Body.Close()
 		user = &User{}
 		err = json.NewDecoder(resp.Body).Decode(user)
 	}

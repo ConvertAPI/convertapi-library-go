@@ -24,6 +24,7 @@ func NewResult() *Result {
 
 func (this *Result) start(url string, data *url.Values, client *http.Client) {
 	if resp, err := respExtractErr(client.PostForm(url, *data)); err == nil {
+		defer resp.Body.Close()
 		response := &response{}
 		json.NewDecoder(resp.Body).Decode(response)
 

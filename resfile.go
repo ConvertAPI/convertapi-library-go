@@ -26,6 +26,10 @@ func (this *ResFile) Read(p []byte) (n int, err error) {
 	err = this.download()
 	if err == nil {
 		n, err = this.resp.Body.Read(p)
+		if err != nil {
+			this.resp.Body.Close()
+			this.resp = nil
+		}
 	}
 	return
 }

@@ -22,6 +22,7 @@ func respExtractErr(r *http.Response, e error) (resp *http.Response, err error) 
 	resp = r
 	err = e
 	if err == nil && resp.StatusCode != http.StatusOK {
+		defer resp.Body.Close()
 		buf := new(bytes.Buffer)
 		buf.ReadFrom(resp.Body)
 		err = errors.New(buf.String())

@@ -1,6 +1,6 @@
 language: go
 
-install: false
+install: true
 
 go:
   - "1.7"

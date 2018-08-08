@@ -2,6 +2,7 @@ package convertapi
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -12,15 +13,16 @@ import (
 )
 
 type Param struct {
-	client *http.Client
-	waitCh chan struct{}
-	err    error
-	name   string
-	value  []string
+	client   *http.Client
+	waitCh   chan struct{}
+	err      error
+	name     string
+	value    []string
+	filePath string
 }
 
 func newParam(name string) *Param {
-	return &Param{nil, make(chan struct{}), nil, strings.ToLower(name), nil}
+	return &Param{nil, make(chan struct{}), nil, strings.ToLower(name), nil, ""}
 }
 
 func newParamWithValueResolved(name string, value string) (param *Param) {
@@ -51,6 +53,7 @@ func NewReaderParam(name string, value io.Reader, filename string, config *Confi
 	}
 	param = newParam(name)
 	param.client = config.HttpClient
+	param.filePath = filename
 
 	go func() {
 		query := url.Values{}
@@ -78,8 +81,10 @@ func NewReaderParam(name string, value io.Reader, filename string, config *Confi
 	return
 }
 
-func NewFileParam(name string, value *os.File, config *Config) *Param {
-	return NewReaderParam(name, value, filepath.Base(value.Name()), config)
+func NewFileParam(name string, value *os.File, config *Config) (param *Param) {
+	param = NewReaderParam(name, value, filepath.Base(value.Name()), config)
+	param.filePath = value.Name()
+	return
 }
 
 func NewFilePathParam(name string, value string, config *Config) *Param {
@@ -113,6 +118,14 @@ func NewResultParam(name string, value *Result, config *Config) (param *Param) {
 	}()
 
 	return
+}
+
+func (this *Param) String() string {
+	f := ""
+	if this.filePath != "" {
+		f = fmt.Sprintf(" %s ->", this.filePath)
+	}
+	return fmt.Sprintf("%s:%s %s", this.name, f, strings.Join(this.value, " "))
 }
 
 func (this *Param) Values() (value []string, err error) {

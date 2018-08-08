@@ -1,4 +1,7 @@
 # ConvertAPI Go Client
+
+[![Build Status](https://secure.travis-ci.org/ConvertAPI/convertapi-go.svg)](http://travis-ci.org/ConvertAPI/convertapi-go)
+
 ## Convert your files with our online file conversion API
 
 The ConvertAPI helps converting various file formats.

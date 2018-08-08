@@ -1,8 +1,8 @@
 package main
 
 import (
-	".."
 	"fmt"
+	"github.com/ConvertAPI/convertapi-go"
 	"net/http"
 	"net/url"
 	"os"

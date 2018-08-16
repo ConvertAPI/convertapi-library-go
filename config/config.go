@@ -1,4 +1,4 @@
-package convertapi
+package config
 
 import (
 	"net/http"

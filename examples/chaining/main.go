@@ -3,31 +3,34 @@ package main
 import (
 	"fmt"
 	"github.com/ConvertAPI/convertapi-go"
+	"github.com/ConvertAPI/convertapi-go/config"
+	"github.com/ConvertAPI/convertapi-go/lib"
+	"github.com/ConvertAPI/convertapi-go/param"
 	"os"
 )
 
 func main() {
-	convertapi.Default.Secret = os.Getenv("CONVERTAPI_SECRET") // Get your secret at https://www.convertapi.com/a
+	config.Default.Secret = os.Getenv("CONVERTAPI_SECRET") // Get your secret at https://www.convertapi.com/a
 
 	fmt.Println("Converting PDF to JPG and compressing result files with ZIP")
 
-	jpgRes := convertapi.Convert("docx", "jpg", []*convertapi.Param{
-		convertapi.NewFilePathParam("file", "assets/test.docx", nil),
+	jpgRes := convertapi.Convert("docx", "jpg", []param.IParam{
+		param.NewPath("file", "assets/test.docx", nil),
 	}, nil)
 
-	zipRes := convertapi.Convert("jpg", "zip", []*convertapi.Param{
-		convertapi.NewResultParam("files", jpgRes, nil),
+	zipRes := convertapi.Convert("jpg", "zip", []param.IParam{
+		param.NewResult("files", jpgRes, nil),
 	}, nil)
 
-	if cost, err := jpgRes.Cost(); convertapi.PrintErr(err) {
+	if cost, err := jpgRes.Cost(); lib.PrintErr(err) {
 		fmt.Println("DOCX -> JPG conversion cost: ", cost)
 	}
 
-	if files, err := jpgRes.Files(); convertapi.PrintErr(err) {
+	if files, err := jpgRes.Files(); lib.PrintErr(err) {
 		fmt.Println("DOCX -> JPG conversion result file count: ", len(files))
 	}
 
-	if cost, err := zipRes.Cost(); convertapi.PrintErr(err) {
+	if cost, err := zipRes.Cost(); lib.PrintErr(err) {
 		fmt.Println("JPG -> ZIP conversion cost: ", cost)
 	}
 

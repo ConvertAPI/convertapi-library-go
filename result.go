@@ -2,6 +2,7 @@ package convertapi
 
 import (
 	"encoding/json"
+	"github.com/ConvertAPI/convertapi-go/lib"
 	"net/http"
 	"net/url"
 	"os"
@@ -23,7 +24,7 @@ func NewResult() *Result {
 }
 
 func (this *Result) start(url string, data *url.Values, client *http.Client) {
-	if resp, err := respExtractErr(client.PostForm(url, *data)); err == nil {
+	if resp, err := lib.RespExtractErr(client.PostForm(url, *data)); err == nil {
 		defer resp.Body.Close()
 		response := &response{}
 		json.NewDecoder(resp.Body).Decode(response)
@@ -53,6 +54,16 @@ func (this *Result) Files() (files []*ResFile, err error) {
 	return files, this.err
 }
 
+func (this *Result) Urls() (urls []string, err error) {
+	files, err := this.Files()
+	if err == nil {
+		for _, file := range files {
+			urls = append(urls, file.Url)
+		}
+	}
+	return
+}
+
 func (this *Result) Read(p []byte) (n int, err error) {
 	files, err := this.Files()
 	if err == nil {
@@ -70,24 +81,24 @@ func (this *Result) ToFile(file *os.File) (err error) {
 }
 
 func (this *Result) ToPath(path string) (files []*os.File, errs []error) {
-	if resFiles, err := this.Files(); addErr(&errs, err) {
-		if !isDir(path) {
+	if resFiles, err := this.Files(); lib.AddErr(&errs, err) {
+		if !lib.IsDir(path) {
 			resFiles = []*ResFile{resFiles[0]}
 		}
 
 		for _, resFile := range resFiles {
 			file, err := resFile.ToPath(path)
 			files = append(files, file)
-			addErr(&errs, err)
+			lib.AddErr(&errs, err)
 		}
 	}
 	return
 }
 
 func (this *Result) Delete() (errs []error) {
-	if files, err := this.Files(); addErr(&errs, err) {
+	if files, err := this.Files(); lib.AddErr(&errs, err) {
 		for _, file := range files {
-			addErr(&errs, file.Delete())
+			lib.AddErr(&errs, file.Delete())
 		}
 	}
 	return

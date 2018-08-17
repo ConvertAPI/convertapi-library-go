@@ -1,6 +1,11 @@
-package convertapi
+package config
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+	"runtime"
+	"strings"
+)
 
 type CaTransport struct {
 	http.RoundTripper
@@ -14,6 +19,8 @@ func NewCaTransport(roundTripper http.RoundTripper) *CaTransport {
 }
 
 func (this *CaTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	req.Header.Add("User-Agent", "convertapi-go")
+	runtime.Version()
+	agent := fmt.Sprintf("ConvertAPI-Go/%d (%s)", Version, strings.Title(runtime.GOOS))
+	req.Header.Add("User-Agent", agent)
 	return this.RoundTripper.RoundTrip(req)
 }

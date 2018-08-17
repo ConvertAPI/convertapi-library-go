@@ -28,7 +28,7 @@ go get github.com/ConvertAPI/convertapi-go
 You can get your secret at https://www.convertapi.com/a
 
 ```go
-convertapi.Default.Secret = "YOUR API SECRET"
+config.Default.Secret = "YOUR API SECRET"
 ```
 
 ### File conversion
@@ -37,8 +37,8 @@ Example to convert DOCX file to PDF.
 All supported formats and options can be found [here](https://www.convertapi.com).
 
 ```go
-pdfRes := convertapi.Convert("docx", "pdf", []*convertapi.Param{
-    convertapi.NewFilePathParam("file", "test.docx", nil),
+pdfRes := convertapi.Convert("docx", "pdf", []param.IParam{
+    param.NewPath("file", "test.docx", nil),
 }, nil)
 
 // save to file
@@ -65,8 +65,8 @@ cost, err := res.Cost()
 #### Convert remote file
 
 ```go
-pptxRes := convertapi.Convert("pptx", "pdf", []*convertapi.Param{
-    convertapi.NewStringParam("file", "https://cdn.convertapi.com/cara/testfiles/presentation.pptx"),
+pptxRes := convertapi.Convert("pptx", "pdf", []param.IParam{
+    param.NewString("file", "https://cdn.convertapi.com/cara/testfiles/presentation.pptx"),
 }, nil)
 ```
 
@@ -76,11 +76,11 @@ ConvertAPI accepts extra conversion parameters depending on converted formats.
 All conversion parameters and explanations can be found [here](https://www.convertapi.com).
 
 ```go
-jpgRes := convertapi.Convert("pdf", "jpg", []*convertapi.Param{
-    convertapi.NewResultParam("file", extractRes, nil),
-    convertapi.NewBoolParam("scaleimage", true),
-    convertapi.NewBoolParam("scaleproportions", true),
-    convertapi.NewIntParam("imageheight", 300),
+jpgRes := convertapi.Convert("pdf", "jpg", []param.IParam{
+    param.NewResult("file", extractRes, nil),
+    param.NewBool("scaleimage", true),
+    param.NewBool("scaleproportions", true),
+    param.NewInt("imageheight", 300),
 }, nil)
 ```
 
@@ -111,7 +111,7 @@ import (
 )
 
 func main() {
-	convertapi.Default.Secret = "YOUR API SECRET"
+	config.Default.Secret = "YOUR API SECRET"
 
 	if file, errs := convertapi.ConvertPath("test.docx", "/tmp/result.pdf"); errs == nil {
 		fmt.Println("PDF file saved to: ", file.Name())

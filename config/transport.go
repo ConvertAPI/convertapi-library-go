@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"runtime"
+	"strings"
 )
 
 type CaTransport struct {
@@ -19,7 +20,7 @@ func NewCaTransport(roundTripper http.RoundTripper) *CaTransport {
 
 func (this *CaTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	runtime.Version()
-	agent := fmt.Sprintf("convertapi-go/%d (%s)", Version, runtime.GOOS)
+	agent := fmt.Sprintf("ConvertAPI-Go/%d (%s)", Version, strings.Title(runtime.GOOS))
 	req.Header.Add("User-Agent", agent)
 	return this.RoundTripper.RoundTrip(req)
 }

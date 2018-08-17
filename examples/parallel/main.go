@@ -3,16 +3,18 @@ package main
 import (
 	"fmt"
 	"github.com/ConvertAPI/convertapi-go"
+	"github.com/ConvertAPI/convertapi-go/config"
+	"github.com/ConvertAPI/convertapi-go/param"
 	"os"
 )
 
 func main() {
-	convertapi.Default.Secret = os.Getenv("CONVERTAPI_SECRET") // Get your secret at https://www.convertapi.com/a
+	config.Default.Secret = os.Getenv("CONVERTAPI_SECRET") // Get your secret at https://www.convertapi.com/a
 
-	fmt.Println("Converting DOCX to PDF and JPG in parallel usung same source file")
-	fileParam := convertapi.NewFilePathParam("file", "assets/test.docx", nil)
-	pdfRes := convertapi.Convert("docx", "pdf", []*convertapi.Param{fileParam}, nil)
-	jpgRes := convertapi.Convert("docx", "jpg", []*convertapi.Param{fileParam}, nil)
+	fmt.Println("Converting DOCX to PDF and JPG in parallel using same source file")
+	fileParam := param.NewPath("file", "assets/test.docx", nil)
+	pdfRes := convertapi.Convert("docx", "pdf", []param.IParam{fileParam}, nil)
+	jpgRes := convertapi.Convert("docx", "jpg", []param.IParam{fileParam}, nil)
 
 	// Downloading and saving files also in parallel
 	c1 := save(pdfRes)

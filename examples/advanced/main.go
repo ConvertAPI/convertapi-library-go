@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/ConvertAPI/convertapi-go"
+	"github.com/ConvertAPI/convertapi-go/config"
+	"github.com/ConvertAPI/convertapi-go/param"
 	"net/http"
 	"net/url"
 	"os"
@@ -19,16 +21,16 @@ func main() {
 	transport := &http.Transport{Proxy: http.ProxyURL(proxy)}
 
 	// Setting this configuration as default
-	convertapi.Default = convertapi.NewConfig(secret, domain, transport)
+	config.Default = config.NewConfig(secret, domain, transport)
 
 	fmt.Println("Converting remote PPTX to PDF")
-	fileParam := convertapi.NewStringParam("file", "https://cdn.convertapi.com/cara/testfiles/presentation.pptx")
-	pptxRes := convertapi.Convert("pptx", "pdf", []*convertapi.Param{fileParam}, nil)
+	fileParam := param.NewString("file", "https://cdn.convertapi.com/cara/testfiles/presentation.pptx")
+	pptxRes := convertapi.Convert("pptx", "pdf", []param.IParam{fileParam}, nil)
 
 	if files, errs := pptxRes.ToPath("/tmp/converted.pdf"); errs == nil {
 		fmt.Println("PDF file saved to: ", files[0].Name())
 		fmt.Println("Deleting source file from convertapi.com server")
-		fileParam.Delete()
+		fileParam.Delete(nil)
 		fmt.Println("Deleting result files from convertapi.com server")
 		pptxRes.Delete()
 	} else {

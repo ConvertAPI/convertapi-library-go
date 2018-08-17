@@ -1,4 +1,4 @@
-package convertapi
+package lib
 
 import (
 	"bytes"
@@ -10,15 +10,15 @@ import (
 	"strings"
 )
 
-func requestDelete(url string, client *http.Client) (err error) {
+func RequestDelete(url string, client *http.Client) (err error) {
 	req, err := http.NewRequest(http.MethodDelete, url, nil)
 	if err == nil {
-		_, err = respExtractErr(client.Do(req))
+		_, err = RespExtractErr(client.Do(req))
 	}
 	return
 }
 
-func respExtractErr(r *http.Response, e error) (resp *http.Response, err error) {
+func RespExtractErr(r *http.Response, e error) (resp *http.Response, err error) {
 	resp = r
 	err = e
 	if err == nil && resp.StatusCode != http.StatusOK {
@@ -30,7 +30,7 @@ func respExtractErr(r *http.Response, e error) (resp *http.Response, err error) 
 	return
 }
 
-func contains(arr []string, str string) bool {
+func Contains(arr []string, str string) bool {
 	for _, a := range arr {
 		if a == str {
 			return true
@@ -39,11 +39,11 @@ func contains(arr []string, str string) bool {
 	return false
 }
 
-func pathExt(path string) string {
+func PathExt(path string) string {
 	return strings.Replace(filepath.Ext(path), ".", "", -1)
 }
 
-func addErr(errs *[]error, err error) bool {
+func AddErr(errs *[]error, err error) bool {
 	if err == nil {
 		return true
 	} else {
@@ -52,7 +52,7 @@ func addErr(errs *[]error, err error) bool {
 	}
 }
 
-func isDir(path string) bool {
+func IsDir(path string) bool {
 	info, err := os.Stat(path)
 	return err == nil && info.IsDir()
 }

@@ -1,6 +1,7 @@
 package convertapi
 
 import (
+	"github.com/ConvertAPI/convertapi-go/lib"
 	"io"
 	"net/http"
 	"os"
@@ -52,5 +53,5 @@ func (this *ResFile) ToPath(path string) (file *os.File, err error) {
 }
 
 func (this *ResFile) Delete() error {
-	return requestDelete(this.Url, this.client)
+	return lib.RequestDelete(this.Url, this.client)
 }

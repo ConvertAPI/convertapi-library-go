@@ -3,6 +3,8 @@ package convertapi
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/ConvertAPI/convertapi-go/config"
+	"github.com/ConvertAPI/convertapi-go/lib"
 	"net/url"
 )
 
@@ -16,19 +18,20 @@ type User struct {
 	Status      string
 }
 
-func UserInfo(config *Config) (user *User, err error) {
-	if config == nil {
-		config = Default
+func UserInfo(conf *config.Config) (user *User, err error) {
+	if conf == nil {
+		conf = config.Default
 	}
 	query := url.Values{}
-	query.Add("secret", config.Secret)
+	query.Add("secret", conf.Secret)
 	path := fmt.Sprintf("/user?%s", query.Encode())
 	pathURL, err := url.Parse(path)
 	if err != nil {
 		return
 	}
-	userURL := config.BaseURL.ResolveReference(pathURL)
-	resp, err := respExtractErr(config.HttpClient.Get(userURL.String()))
+
+	userURL := conf.BaseURL.ResolveReference(pathURL)
+	resp, err := lib.RespExtractErr(conf.HttpClient.Get(userURL.String()))
 	if err == nil {
 		defer resp.Body.Close()
 		user = &User{}

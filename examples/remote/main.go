@@ -3,15 +3,17 @@ package main
 import (
 	"fmt"
 	"github.com/ConvertAPI/convertapi-go"
+	"github.com/ConvertAPI/convertapi-go/config"
+	"github.com/ConvertAPI/convertapi-go/param"
 	"os"
 )
 
 func main() {
-	convertapi.Default.Secret = os.Getenv("CONVERTAPI_SECRET") // Get your secret at https://www.convertapi.com/a
+	config.Default.Secret = os.Getenv("CONVERTAPI_SECRET") // Get your secret at https://www.convertapi.com/a
 
 	fmt.Println("Converting remote PPTX to PDF")
-	pptxRes := convertapi.Convert("pptx", "pdf", []*convertapi.Param{
-		convertapi.NewStringParam("file", "https://cdn.convertapi.com/cara/testfiles/presentation.pptx"),
+	pptxRes := convertapi.Convert("pptx", "pdf", []param.IParam{
+		param.NewString("file", "https://cdn.convertapi.com/cara/testfiles/presentation.pptx"),
 	}, nil)
 
 	if files, errs := pptxRes.ToPath("/tmp/converted.pdf"); errs == nil {

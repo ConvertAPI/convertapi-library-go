@@ -48,7 +48,7 @@ func (this *Param) Prepare() error {
 }
 
 func (this *Param) Name() string {
-	return this.name
+	return strings.ToLower(this.name)
 }
 
 func (this *Param) Values() ([]string, error) {

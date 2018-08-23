@@ -9,6 +9,10 @@ import (
 	"os"
 )
 
+func ConvDef(fromFormat string, toFormat string, params ...param.IParam) (result *Result) {
+	return Convert(fromFormat, toFormat, params, nil)
+}
+
 func Convert(fromFormat string, toFormat string, params []param.IParam, conf *config.Config) (result *Result) {
 	result = NewResult()
 	go func() {
@@ -17,19 +21,21 @@ func Convert(fromFormat string, toFormat string, params []param.IParam, conf *co
 		}
 		ignoreParams := []string{"storefile", "async", "jobid", "timeout"}
 		values := &url.Values{}
-		for _, p := range params {
-			if !lib.Contains(ignoreParams, p.Name()) {
-				if vals, err := p.Values(); err == nil {
-					if len(vals) == 1 {
-						values.Add(p.Name(), vals[0])
-					} else {
-						for i, val := range vals {
-							values.Add(fmt.Sprintf("%s[%d]", p.Name(), i), val)
-						}
-					}
+
+		paramVals, err := prepareValues(params)
+		if err != nil {
+			result.reject(err)
+			return
+		}
+
+		for name, vals := range paramVals {
+			if !lib.Contains(ignoreParams, name) {
+				if len(vals) == 1 {
+					values.Add(name, vals[0])
 				} else {
-					result.reject(err)
-					return
+					for i, val := range vals {
+						values.Add(fmt.Sprintf("%s[%d]", name, i), val)
+					}
 				}
 			}
 		}
@@ -47,6 +53,24 @@ func Convert(fromFormat string, toFormat string, params []param.IParam, conf *co
 
 		result.start(convertURL.String(), values, conf.HttpClient)
 	}()
+	return
+}
+
+func prepareValues(params []param.IParam) (vals map[string][]string, err error) {
+	vals = make(map[string][]string)
+	for _, p := range params {
+		paramVal, err := p.Values()
+		if err != nil {
+			return nil, err
+		}
+		v, ok := vals[p.Name()]
+		if ok {
+			v = append(v, paramVal...)
+		} else {
+			v = paramVal
+		}
+		vals[p.Name()] = v
+	}
 	return
 }
 

@@ -28,7 +28,7 @@ go get github.com/ConvertAPI/convertapi-go
 You can get your secret at https://www.convertapi.com/a
 
 ```go
-config.Default.Secret = "YOUR API SECRET"
+config.Default.Secret = "your api secret"
 ```
 
 ### File conversion

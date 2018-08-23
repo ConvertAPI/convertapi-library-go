@@ -109,7 +109,7 @@ import (
 )
 
 func main() {
-	config.Default.Secret = "YOUR API SECRET"
+	config.Default.Secret = "your api secret"
 
 	if file, errs := convertapi.ConvertPath("test.docx", "/tmp/result.pdf"); errs == nil {
 		fmt.Println("PDF file saved to: ", file.Name())

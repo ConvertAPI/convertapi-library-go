@@ -120,7 +120,7 @@ func main() {
 ```
 
 This is the bare-minimum to convert a file using the ConvertAPI client, but you can do a great deal more with the ConvertAPI Go library.
-Take special note that you should replace `YOUR API SECRET` with the secret you obtained in item two of the pre-requisites.
+Take special note that you should replace `your api secret` with the secret you obtained in item two of the pre-requisites.
 
 ### Issues &amp; Comments
 Please leave all comments, bugs, requests, and issues on the Issues page. We'll respond to your request ASAP!

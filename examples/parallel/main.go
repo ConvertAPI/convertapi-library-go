@@ -13,8 +13,8 @@ func main() {
 
 	fmt.Println("Converting DOCX to PDF and JPG in parallel using same source file")
 	fileParam := param.NewPath("file", "assets/test.docx", nil)
-	pdfRes := convertapi.Convert("docx", "pdf", []param.IParam{fileParam}, nil)
-	jpgRes := convertapi.Convert("docx", "jpg", []param.IParam{fileParam}, nil)
+	pdfRes := convertapi.ConvDef("docx", "pdf", fileParam)
+	jpgRes := convertapi.ConvDef("docx", "jpg", fileParam)
 
 	// Downloading and saving files also in parallel
 	c1 := save(pdfRes)

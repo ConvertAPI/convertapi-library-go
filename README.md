@@ -37,9 +37,7 @@ Example to convert DOCX file to PDF.
 All supported formats and options can be found [here](https://www.convertapi.com).
 
 ```go
-pdfRes := convertapi.Convert("docx", "pdf", []param.IParam{
-    param.NewPath("file", "test.docx", nil),
-}, nil)
+pdfRes := convertapi.ConvDef("docx", "pdf", param.NewPath("file", "test.docx", nil))
 
 // save to file
 pdfRes.ToPath("/tmp/result.pdf")
@@ -65,9 +63,9 @@ cost, err := res.Cost()
 #### Convert remote file
 
 ```go
-pptxRes := convertapi.Convert("pptx", "pdf", []param.IParam{
+pptxRes := convertapi.ConvDef("pptx", "pdf", 
     param.NewString("file", "https://cdn.convertapi.com/cara/testfiles/presentation.pptx"),
-}, nil)
+)
 ```
 
 #### Additional conversion parameters
@@ -76,12 +74,12 @@ ConvertAPI accepts extra conversion parameters depending on converted formats.
 All conversion parameters and explanations can be found [here](https://www.convertapi.com).
 
 ```go
-jpgRes := convertapi.Convert("pdf", "jpg", []param.IParam{
+jpgRes := convertapi.ConvDef("pdf", "jpg",
     param.NewResult("file", extractRes, nil),
     param.NewBool("scaleimage", true),
     param.NewBool("scaleproportions", true),
     param.NewInt("imageheight", 300),
-}, nil)
+)
 ```
 
 ### User information

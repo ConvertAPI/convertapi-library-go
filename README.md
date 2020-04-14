@@ -4,18 +4,14 @@
 
 ## Convert your files with our online file conversion API
 
-The ConvertAPI helps converting various file formats.
-Creating PDF and Images from various sources like Word, Excel, Powerpoint, images, web pages or raw HTML codes.
-Merge, Encrypt, Split, Repair and Decrypt PDF files.
-And many others files manipulations.
-In just few minutes you can integrate it into your application and use it easily.
+ConvertAPI helps in converting various file formats. Creating PDF and Images from various sources like Word, Excel, Powerpoint, images, web pages or raw HTML codes. Merge, Encrypt, Split, Repair and Decrypt PDF files and many other file manipulations. You can integrate it into your application in just a few minutes and use it easily.
 
 The ConvertAPI-Go library makes it easier to use the Convert API from your Go projects without having to build your own API calls.
 You can get your free API secret at https://www.convertapi.com/a
 
 ## Installation
 
-Execute in your GOPATH this command:
+Execute this command in your GOPATH:
 
 ```shell
 go get github.com/ConvertAPI/convertapi-go
@@ -33,7 +29,7 @@ config.Default.Secret = "your-api-secret"
 
 ### File conversion
 
-Example to convert DOCX file to PDF.
+Convert DOCX file to PDF example.
 All supported formats and options can be found [here](https://www.convertapi.com).
 
 ```go
@@ -70,7 +66,7 @@ pptxRes := convertapi.ConvDef("pptx", "pdf",
 
 #### Additional conversion parameters
 
-ConvertAPI accepts extra conversion parameters depending on converted formats.
+ConvertAPI accepts extra conversion parameters depending on selected file formats.
 All conversion parameters and explanations can be found [here](https://www.convertapi.com).
 
 ```go
@@ -84,7 +80,7 @@ jpgRes := convertapi.ConvDef("pdf", "jpg",
 
 ### User information
 
-You can always check remaining seconds amount by fetching [user information](https://www.convertapi.com/doc/user).
+You can always check your remaining seconds programmatically by fetching [user information](https://www.convertapi.com/doc/user).
 
 ```go
 user, err := convertapi.UserInfo(nil)
@@ -93,11 +89,11 @@ secondsLeft := user.SecondsLeft
 
 ### More examples
 
-You can find more advanced examples in the [examples](https://github.com/ConvertAPI/convertapi-go/tree/master/examples) folder.
+Find more advanced examples in the [examples](https://github.com/ConvertAPI/convertapi-go/tree/master/examples) folder.
 
 #### Converting your first file, full example:
 
-ConvertAPI is designed to make converting file super easy, the following snippet shows how easy it is to get started. Let's convert WORD DOCX file to PDF:
+ConvertAPI is designed to make converting file super easy. The following snippet shows how easy it is to get started. Let's convert a WORD DOCX file to PDF:
 
 ```go
 package main

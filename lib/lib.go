@@ -44,12 +44,11 @@ func PathExt(path string) string {
 }
 
 func AddErr(errs *[]error, err error) bool {
-	if err == nil {
-		return true
-	} else {
+	if err != nil {
 		*errs = append(*errs, err)
 		return false
 	}
+	return true
 }
 
 func IsDir(path string) bool {

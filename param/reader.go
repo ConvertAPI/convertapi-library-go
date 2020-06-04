@@ -50,7 +50,9 @@ func (this *ParamReader) Prepare() error {
 		}
 
 		buf := new(bytes.Buffer)
-		buf.ReadFrom(resp.Body)
+		if _, err := buf.ReadFrom(resp.Body); err != nil {
+			return err
+		}
 		this.values = []string{buf.String()}
 	}
 	return nil

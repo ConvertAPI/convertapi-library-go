@@ -19,13 +19,18 @@ func Convert(fromFormat string, toFormat string, params []param.IParam, conf *co
 		if conf == nil {
 			conf = config.Default
 		}
-		ignoreParams := []string{"storefile", "async", "jobid", "timeout"}
+		ignoreParams := []string{"storefile", "async", "jobid", "timeout", "converter"}
 		values := &url.Values{}
 
 		paramVals, err := prepareValues(params)
 		if err != nil {
 			result.reject(err)
 			return
+		}
+
+		converter := ""
+		if val, ok := paramVals["converter"]; ok && len(val) > 0 {
+			converter = fmt.Sprintf("/converter/%s", val[0])
 		}
 
 		for name, vals := range paramVals {
@@ -43,7 +48,7 @@ func Convert(fromFormat string, toFormat string, params []param.IParam, conf *co
 		query := url.Values{}
 		query.Add("secret", conf.Secret)
 		query.Add("storefile", "true")
-		path := fmt.Sprintf("/convert/%s/to/%s?%s", fromFormat, toFormat, query.Encode())
+		path := fmt.Sprintf("/convert/%s/to/%s%s?%s", fromFormat, toFormat, converter, query.Encode())
 		pathURL, err := url.Parse(path)
 		if err != nil {
 			result.reject(err)

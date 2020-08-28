@@ -19,7 +19,7 @@ func Convert(fromFormat string, toFormat string, params []param.IParam, conf *co
 		if conf == nil {
 			conf = config.Default
 		}
-		ignoreParams := []string{"storefile", "async", "jobid", "timeout", "converter"}
+		ignoreParams := []string{"storefile", "async", "jobid", "converter"}
 		values := &url.Values{}
 
 		paramVals, err := prepareValues(params)

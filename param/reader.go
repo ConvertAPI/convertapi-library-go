@@ -44,10 +44,11 @@ func (this *ParamReader) Prepare() error {
 
 		uploadURL := this.config.BaseURL.ResolveReference(pathURL)
 		resp, err := this.config.HttpClient.Post(uploadURL.String(), "application/octet-stream", this.reader)
-		defer resp.Body.Close()
+
 		if err != nil {
 			return err
 		}
+		defer resp.Body.Close()		
 
 		buf := new(bytes.Buffer)
 		if _, err := buf.ReadFrom(resp.Body); err != nil {

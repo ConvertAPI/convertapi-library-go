@@ -23,7 +23,7 @@ func UserInfo(conf *config.Config) (user *User, err error) {
 		conf = config.Default
 	}
 	query := url.Values{}
-	query.Add("secret", conf.Secret)
+	conf.AddAuth(query)
 	path := fmt.Sprintf("/user?%s", query.Encode())
 	pathURL, err := url.Parse(path)
 	if err != nil {

@@ -46,7 +46,7 @@ func Convert(fromFormat string, toFormat string, params []param.IParam, conf *co
 		}
 
 		query := url.Values{}
-		query.Add("secret", conf.Secret)
+		conf.AddAuth(query)
 		query.Add("storefile", "true")
 		path := fmt.Sprintf("/convert/%s/to/%s%s?%s", fromFormat, toFormat, converter, query.Encode())
 		pathURL, err := url.Parse(path)

@@ -15,6 +15,16 @@ func TestSetup(t *testing.T) {
 }
 
 func TestConvertPath(t *testing.T) {
+	config.Default.Secret = os.Getenv("CONVERTAPI_SECRET")
+	file, errs := ConvertPath("assets/test.docx", path.Join(os.TempDir(), "convertapi-test.pdf"))
+
+	assert.Nil(t, errs)
+	assert.NotEmpty(t, file.Name())
+}
+
+func TestTokenAuth(t *testing.T) {
+	config.Default.Token = os.Getenv("CONVERTAPI_TOKEN")
+	config.Default.ApiKey = os.Getenv("CONVERTAPI_APIKEY")
 	file, errs := ConvertPath("assets/test.docx", path.Join(os.TempDir(), "convertapi-test.pdf"))
 
 	assert.Nil(t, errs)
@@ -22,11 +32,12 @@ func TestConvertPath(t *testing.T) {
 }
 
 func TestChained(t *testing.T) {
+	config.Default.Secret = os.Getenv("CONVERTAPI_SECRET")
 	jpgRes := Convert("docx", "jpg", []param.IParam{
 		param.NewPath("file", "assets/test.docx", nil),
 	}, nil)
 
-	zipRes := Convert("jpg", "zip", []param.IParam{
+	zipRes := Convert("any", "zip", []param.IParam{
 		param.NewResult("files", jpgRes, nil),
 	}, nil)
 
@@ -42,6 +53,7 @@ func TestChained(t *testing.T) {
 }
 
 func TestUserInfo(t *testing.T) {
+	config.Default.Secret = os.Getenv("CONVERTAPI_SECRET")
 	user, err := UserInfo(nil)
 
 	assert.Nil(t, err)

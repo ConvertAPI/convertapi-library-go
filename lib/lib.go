@@ -24,8 +24,9 @@ func RespExtractErr(r *http.Response, e error) (resp *http.Response, err error) 
 	if err == nil && resp.StatusCode != http.StatusOK {
 		defer resp.Body.Close()
 		buf := new(bytes.Buffer)
-		buf.ReadFrom(resp.Body)
-		err = errors.New(buf.String())
+		if _, err = buf.ReadFrom(resp.Body); err == nil {
+			err = errors.New(buf.String())
+		}
 	}
 	return
 }

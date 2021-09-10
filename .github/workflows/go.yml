@@ -9,11 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      GO111MODULE: auto
-      CONVERTAPI_APIKEY: ${{ secrets.CONVERTAPI_APIKEY }}
-      CONVERTAPI_SECRET: ${{ secrets.CONVERTAPI_SECRET }}
-      CONVERTAPI_TOKEN: ${{ secrets.CONVERTAPI_TOKEN }}
 
     steps:
     - uses: actions/checkout@v2
@@ -33,4 +28,9 @@ jobs:
       run: cd /home/runner/go/src/github.com/ConvertAPI/convertapi-go && go build -v ./...
 
     - name: Test
+      env:
+        GO111MODULE: auto
+        CONVERTAPI_APIKEY: ${{ secrets.CONVERTAPI_APIKEY }}
+        CONVERTAPI_SECRET: ${{ secrets.CONVERTAPI_SECRET }}
+        CONVERTAPI_TOKEN: ${{ secrets.CONVERTAPI_TOKEN }}
       run: cd /home/runner/go/src/github.com/ConvertAPI/convertapi-go && go test -v ./...

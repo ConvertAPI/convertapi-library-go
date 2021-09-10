@@ -31,7 +31,7 @@ jobs:
 
     - name: Test
       env:
-        CONVERTAPI_APIKEY: ${{ secrets.CONVERTAPI_APIKEY }}
-        CONVERTAPI_SECRET: ${{ secrets.CONVERTAPI_SECRET }}
-        CONVERTAPI_TOKEN: ${{ secrets.CONVERTAPI_TOKEN }}
+        CONVERTAPI_SECRET: ${{ testing.CONVERTAPI_SECRET }}
+        CONVERTAPI_TOKEN: ${{ testing.CONVERTAPI_TOKEN }}
+        CONVERTAPI_APIKEY: ${{ testing.CONVERTAPI_APIKEY }}
       run: cd /home/runner/go/src/github.com/ConvertAPI/convertapi-go && go test -v ./...

@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GO111MODULE: auto
 
     steps:
     - uses: actions/checkout@v2
@@ -29,7 +31,6 @@ jobs:
 
     - name: Test
       env:
-        GO111MODULE: auto
         CONVERTAPI_APIKEY: ${{ secrets.CONVERTAPI_APIKEY }}
         CONVERTAPI_SECRET: ${{ secrets.CONVERTAPI_SECRET }}
         CONVERTAPI_TOKEN: ${{ secrets.CONVERTAPI_TOKEN }}

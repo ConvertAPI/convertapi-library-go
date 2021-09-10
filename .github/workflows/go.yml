@@ -23,6 +23,9 @@ jobs:
     - name: Get package
       run: go get github.com/ConvertAPI/convertapi-go && cd /home/runner/go/src/github.com/ConvertAPI/convertapi-go
 
+    - name: Get dependencies
+      run: go get ./...
+
     - name: Build
       run: go build -v ./...
 

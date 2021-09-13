@@ -1,6 +1,6 @@
 # ConvertAPI Go Client
 
-[![Build Status](https://secure.travis-ci.org/ConvertAPI/convertapi-go.svg)](http://travis-ci.org/ConvertAPI/convertapi-go)
+![example workflow](https://github.com/ConvertAPI/convertapi-go/actions/workflows/tests.yml/badge.svg)
 
 ## Convert your files with our online file conversion API
 

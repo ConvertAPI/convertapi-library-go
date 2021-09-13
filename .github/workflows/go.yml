@@ -23,6 +23,9 @@ jobs:
       with:
         go-version: 1.17
 
+    - name: debug
+      run: echo $CONVERTAPI_SECRET
+
     - name: Get package
       run: go get github.com/ConvertAPI/convertapi-go github.com/stretchr/testify
 

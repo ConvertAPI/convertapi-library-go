@@ -30,7 +30,7 @@ config.Default.Secret = "your-api-secret"
 ### File conversion
 
 Convert DOCX file to PDF example.
-All supported formats and options can be found [here](https://www.convertapi.com).
+All supported formats and options can be found [here](https://www.convertapi.com/conversions).
 
 ```go
 pdfRes := convertapi.ConvDef("docx", "pdf", param.NewPath("file", "test.docx", nil))

@@ -67,7 +67,7 @@ pptxRes := convertapi.ConvDef("pptx", "pdf",
 #### Additional conversion parameters
 
 ConvertAPI accepts extra conversion parameters depending on selected file formats.
-All conversion parameters and explanations can be found [here](https://www.convertapi.com).
+All conversion parameters and explanations can be found [here](https://www.convertapi.com/conversions).
 
 ```go
 jpgRes := convertapi.ConvDef("pdf", "jpg",

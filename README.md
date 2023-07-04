@@ -87,6 +87,11 @@ user, err := convertapi.UserInfo(nil)
 secondsLeft := user.SecondsLeft
 ```
 
+### Alternative domain
+
+How to set an alternative domain can be found in the [advanced example](https://github.com/ConvertAPI/convertapi-go/blob/master/examples/advanced/main.go).
+Dedicated to the region [domain list](https://www.convertapi.com/doc/servers-location).
+
 ### More examples
 
 Find more advanced examples in the [examples](https://github.com/ConvertAPI/convertapi-go/tree/master/examples) folder.

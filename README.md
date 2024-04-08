@@ -26,6 +26,11 @@ You can get your secret at https://www.convertapi.com/a
 ```go
 config.Default.Secret = "your-api-secret"
 ```
+or
+```go
+config.Default.Token = "your-token"
+config.Default.ApiKey = "your-api-key"
+```
 
 ### File conversion
 

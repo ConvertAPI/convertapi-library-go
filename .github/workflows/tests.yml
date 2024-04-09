@@ -23,14 +23,11 @@ jobs:
       with:
         go-version: 1.22
 
-    - name: Get package
-      run: go install github.com/ConvertAPI/convertapi-go@latest github.com/stretchr/testify@latest
-
-    - name: Get dependencies
-      run: cd /home/runner/go/src/github.com/ConvertAPI/convertapi-go && go install ./...
+    - name: Install package
+      run: go install
 
     - name: Build
-      run: cd /home/runner/go/src/github.com/ConvertAPI/convertapi-go && go build -v ./...
+      run: go build -v ./...
 
     - name: testing
-      run: cd /home/runner/go/src/github.com/ConvertAPI/convertapi-go && go test -v ./...
+      run: go test -v ./...

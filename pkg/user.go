@@ -3,8 +3,8 @@ package convertapi
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ConvertAPI/convertapi-go/config"
-	"github.com/ConvertAPI/convertapi-go/lib"
+	"github.com/ConvertAPI/convertapi-go/pkg/config"
+	"github.com/ConvertAPI/convertapi-go/pkg/lib"
 	"net/url"
 )
 
@@ -23,7 +23,6 @@ func UserInfo(conf *config.Config) (user *User, err error) {
 		conf = config.Default
 	}
 	query := url.Values{}
-	conf.AddAuth(query)
 	path := fmt.Sprintf("/user?%s", query.Encode())
 	pathURL, err := url.Parse(path)
 	if err != nil {

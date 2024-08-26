@@ -1,43 +1,37 @@
 package convertapi
 
 import (
-	"github.com/ConvertAPI/convertapi-go/config"
-	"github.com/ConvertAPI/convertapi-go/param"
+	"github.com/ConvertAPI/convertapi-go/pkg"
+	"github.com/ConvertAPI/convertapi-go/pkg/config"
+	"github.com/ConvertAPI/convertapi-go/pkg/param"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"path"
 	"testing"
 )
 
+var authCred = os.Getenv("CONVERTAPI_SECRET")
+
 func TestSetup(t *testing.T) {
-	config.Default.Secret = os.Getenv("CONVERTAPI_SECRET")
-	assert.Equal(t, config.Default.Secret, os.Getenv("CONVERTAPI_SECRET"))
+	config.Default = config.NewDefault(authCred)
+	assert.Equal(t, config.Default.CaTransport.AuthCred, authCred)
 }
 
 func TestConvertPath(t *testing.T) {
-	config.Default.Secret = os.Getenv("CONVERTAPI_SECRET")
-	file, errs := ConvertPath("assets/test.docx", path.Join(os.TempDir(), "convertapi-test.pdf"))
-
-	assert.Nil(t, errs)
-	assert.NotEmpty(t, file.Name())
-}
-
-func TestTokenAuth(t *testing.T) {
-	config.Default.Token = os.Getenv("CONVERTAPI_TOKEN")
-	config.Default.ApiKey = os.Getenv("CONVERTAPI_APIKEY")
-	file, errs := ConvertPath("assets/test.docx", path.Join(os.TempDir(), "convertapi-test.pdf"))
+	config.Default = config.NewDefault(authCred)
+	file, errs := convertapi.ConvertPath("assets/test.docx", path.Join(os.TempDir(), "convertapi-test.pdf"))
 
 	assert.Nil(t, errs)
 	assert.NotEmpty(t, file.Name())
 }
 
 func TestChained(t *testing.T) {
-	config.Default.Secret = os.Getenv("CONVERTAPI_SECRET")
-	jpgRes := Convert("docx", "jpg", []param.IParam{
+	config.Default = config.NewDefault(authCred)
+	jpgRes := convertapi.Convert("docx", "jpg", []param.IParam{
 		param.NewPath("file", "assets/test.docx", nil),
 	}, nil)
 
-	zipRes := Convert("any", "zip", []param.IParam{
+	zipRes := convertapi.Convert("any", "zip", []param.IParam{
 		param.NewResult("files", jpgRes, nil),
 	}, nil)
 
@@ -53,8 +47,8 @@ func TestChained(t *testing.T) {
 }
 
 func TestUserInfo(t *testing.T) {
-	config.Default.Secret = os.Getenv("CONVERTAPI_SECRET")
-	user, err := UserInfo(nil)
+	config.Default = config.NewDefault(authCred)
+	user, err := convertapi.UserInfo(nil)
 
 	assert.Nil(t, err)
 	assert.NotEmpty(t, user.SecondsLeft)

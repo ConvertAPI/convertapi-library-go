@@ -1,7 +1,7 @@
 package convertapi
 
 import (
-	"github.com/ConvertAPI/convertapi-go/lib"
+	"github.com/ConvertAPI/convertapi-go/pkg/lib"
 	"io"
 	"net/http"
 	"os"

@@ -2,9 +2,9 @@ package convertapi
 
 import (
 	"fmt"
-	"github.com/ConvertAPI/convertapi-go/config"
-	"github.com/ConvertAPI/convertapi-go/lib"
-	"github.com/ConvertAPI/convertapi-go/param"
+	"github.com/ConvertAPI/convertapi-go/pkg/config"
+	"github.com/ConvertAPI/convertapi-go/pkg/lib"
+	"github.com/ConvertAPI/convertapi-go/pkg/param"
 	"net/url"
 	"os"
 )
@@ -41,7 +41,6 @@ func Convert(fromFormat string, toFormat string, params []param.IParam, conf *co
 		}
 
 		query := url.Values{}
-		conf.AddAuth(query)
 		query.Add("storefile", "true")
 		path := fmt.Sprintf("/convert/%s/to/%s?%s", fromFormat, toFormat, query.Encode())
 		pathURL, err := url.Parse(path)

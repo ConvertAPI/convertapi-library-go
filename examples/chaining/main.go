@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/ConvertAPI/convertapi-go"
-	"github.com/ConvertAPI/convertapi-go/config"
-	"github.com/ConvertAPI/convertapi-go/lib"
-	"github.com/ConvertAPI/convertapi-go/param"
+	"github.com/ConvertAPI/convertapi-go/pkg"
+	"github.com/ConvertAPI/convertapi-go/pkg/config"
+	"github.com/ConvertAPI/convertapi-go/pkg/lib"
+	"github.com/ConvertAPI/convertapi-go/pkg/param"
 	"os"
 )
 
 func main() {
-	config.Default.Secret = os.Getenv("CONVERTAPI_SECRET") // Get your secret at https://www.convertapi.com/a
+	config.Default = config.NewDefault(os.Getenv("CONVERTAPI_SECRET")) // Get your secret at https://www.convertapi.com/a
 
 	fmt.Println("Converting PDF to JPG and compressing result files with ZIP")
 

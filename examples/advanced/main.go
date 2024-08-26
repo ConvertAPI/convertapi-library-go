@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/ConvertAPI/convertapi-go"
-	"github.com/ConvertAPI/convertapi-go/config"
-	"github.com/ConvertAPI/convertapi-go/param"
+	"github.com/ConvertAPI/convertapi-go/pkg"
+	"github.com/ConvertAPI/convertapi-go/pkg/config"
+	"github.com/ConvertAPI/convertapi-go/pkg/param"
 	"net/http"
 	"net/url"
 	"os"
@@ -21,7 +21,7 @@ func main() {
 	transport := &http.Transport{Proxy: http.ProxyURL(proxy)}
 
 	// Setting this configuration as default
-	config.Default = config.NewConfig(secret, domain, transport)
+	config.Default = config.New(secret, domain, transport)
 
 	fmt.Println("Converting remote PPTX to PDF")
 	fileParam := param.NewString("file", "https://cdn.convertapi.com/cara/testfiles/presentation.pptx")

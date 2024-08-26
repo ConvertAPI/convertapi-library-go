@@ -3,7 +3,7 @@ package param
 import (
 	"bytes"
 	"fmt"
-	"github.com/ConvertAPI/convertapi-go/config"
+	"github.com/ConvertAPI/convertapi-go/pkg/config"
 	"io"
 	"net/url"
 	"strings"
@@ -48,7 +48,7 @@ func (this *ParamReader) Prepare() error {
 		if err != nil {
 			return err
 		}
-		defer resp.Body.Close()		
+		defer resp.Body.Close()
 
 		buf := new(bytes.Buffer)
 		if _, err := buf.ReadFrom(resp.Body); err != nil {

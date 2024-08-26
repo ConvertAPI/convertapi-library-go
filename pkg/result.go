@@ -2,7 +2,7 @@ package convertapi
 
 import (
 	"encoding/json"
-	"github.com/ConvertAPI/convertapi-go/lib"
+	"github.com/ConvertAPI/convertapi-go/pkg/lib"
 	"net/http"
 	"net/url"
 	"os"

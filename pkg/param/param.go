@@ -2,8 +2,8 @@ package param
 
 import (
 	"fmt"
-	"github.com/ConvertAPI/convertapi-go/config"
-	"github.com/ConvertAPI/convertapi-go/lib"
+	"github.com/ConvertAPI/convertapi-go/pkg/config"
+	"github.com/ConvertAPI/convertapi-go/pkg/lib"
 	"net/url"
 	"strconv"
 	"strings"

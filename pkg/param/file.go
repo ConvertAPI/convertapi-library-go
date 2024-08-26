@@ -2,7 +2,7 @@ package param
 
 import (
 	"fmt"
-	"github.com/ConvertAPI/convertapi-go/config"
+	"github.com/ConvertAPI/convertapi-go/pkg/config"
 	"os"
 	"path/filepath"
 	"strings"

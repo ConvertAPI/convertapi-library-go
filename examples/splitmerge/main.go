@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/ConvertAPI/convertapi-go"
-	"github.com/ConvertAPI/convertapi-go/config"
-	"github.com/ConvertAPI/convertapi-go/param"
+	"github.com/ConvertAPI/convertapi-go/pkg"
+	"github.com/ConvertAPI/convertapi-go/pkg/config"
+	"github.com/ConvertAPI/convertapi-go/pkg/param"
 	"os"
 )
 
 func main() {
-	config.Default.Secret = os.Getenv("CONVERTAPI_SECRET") // Get your secret at https://www.convertapi.com/a
+	config.Default = config.NewDefault(os.Getenv("CONVERTAPI_SECRET")) // Get your secret at https://www.convertapi.com/a
 
 	fmt.Println("Creating PDF with the first and the last pages")
 	splitRes := convertapi.ConvDef("pdf", "split",

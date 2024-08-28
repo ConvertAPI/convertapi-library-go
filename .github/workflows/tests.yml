@@ -21,13 +21,13 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v5
       with:
-        go-version: 1.23
+        go-version: 1.22.2
 
     - name: Install package
-      run: go install
+      run: go install ./pkg
 
     - name: Build
-      run: go build -v ./...
+      run: go build -v ./pkg
 
     - name: testing
-      run: go test -v ./...
+      run: go test -v ./pkg

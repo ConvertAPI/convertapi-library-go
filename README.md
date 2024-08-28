@@ -24,12 +24,7 @@ go get github.com/ConvertAPI/convertapi-go
 You can get your secret at https://www.convertapi.com/a
 
 ```go
-config.Default.Secret = "your-api-secret"
-```
-or
-```go
-config.Default.Token = "your-token"
-config.Default.ApiKey = "your-api-key"
+config.Default = config.NewDefault(os.Getenv("your-api-secret-or-token"))
 ```
 
 ### File conversion
@@ -115,7 +110,7 @@ import (
 )
 
 func main() {
-	config.Default.Secret = "your-api-secret"
+	config.Default = config.NewDefault(os.Getenv("your-api-secret-or-token"))
 
 	if file, errs := convertapi.ConvertPath("test.docx", "/tmp/result.pdf"); errs == nil {
 		fmt.Println("PDF file saved to: ", file.Name())

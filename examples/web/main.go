@@ -11,13 +11,13 @@ import (
 func main() {
 	config.Default = config.NewDefault(os.Getenv("CONVERTAPI_SECRET")) // Get your secret at https://www.convertapi.com/a
 
-	fmt.Println("Converting remote PPTX to PDF")
-	pptxRes := convertapi.ConvDef("web", "pdf",
+	fmt.Println("Converting WEB page to PDF")
+	webRes := convertapi.ConvDef("web", "pdf",
 		param.NewString("url", "https://en.wikipedia.org/wiki/Data_conversion"),
 		param.NewString("filename", "web-example"),
 	)
 
-	if files, errs := pptxRes.ToPath("/tmp"); errs == nil {
+	if files, errs := webRes.ToPath("/tmp"); errs == nil {
 		fmt.Println("PDF file saved to: ", files[0].Name())
 	} else {
 		fmt.Println(errs)

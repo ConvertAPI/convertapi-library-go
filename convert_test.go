@@ -51,5 +51,6 @@ func TestUserInfo(t *testing.T) {
 	user, err := convertapi.UserInfo(nil)
 
 	assert.Nil(t, err)
-	assert.NotEmpty(t, user.SecondsLeft)
+	assert.NotEmpty(t, user.ConversionsTotal)
+	assert.NotEmpty(t, user.ConversionsConsumed)
 }

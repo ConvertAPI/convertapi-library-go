@@ -9,13 +9,14 @@ import (
 )
 
 type User struct {
-	Active      bool
-	ApiKey      int
-	Email       string
-	FullName    string
-	SecondsLeft int
-	Secret      string
-	Status      string
+	Active              bool
+	ApiKey              int
+	Email               string
+	FullName            string
+	ConversionsTotal    int
+	ConversionsConsumed int
+	Secret              string
+	Status              string
 }
 
 func UserInfo(conf *config.Config) (user *User, err error) {

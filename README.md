@@ -84,7 +84,8 @@ You can always check your remaining seconds programmatically by fetching [user i
 
 ```go
 user, err := convertapi.UserInfo(nil)
-secondsLeft := user.SecondsLeft
+conversionsTotal := user.ConversionsTotal
+conversionsConsumed := user.ConversionsConsumed
 ```
 
 ### Alternative domain

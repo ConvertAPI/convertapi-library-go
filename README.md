@@ -124,6 +124,16 @@ func main() {
 This is the bare-minimum to convert a file using the ConvertAPI client, but you can do a great deal more with the ConvertAPI Go library.
 Take special note that you should replace `your-api-secret` with the secret you obtained in item two of the pre-requisites.
 
+
+### Conversion Without Temporarily Storing Files on the ConvertAPI File Server
+By design, the ConvertAPI library uses a temporary file server to store files.
+A temporary file server is useful for conversion chaining and generally improves performance.
+However, the [Vanilla Go Example](examples/direct/main.go) demonstrates how to efficiently convert files without using the ConvertAPI file server.
+
+In this example, both the request and response use the `multipart` content type. This approach allows you to convert multiple files or return conversion results as multiple files.
+Using `multipart` is much more efficient compared to JSON with base64 encoding.
+
+
 ### Issues &amp; Comments
 Please leave all comments, bugs, requests, and issues on the Issues page. We'll respond to your request ASAP!
 

@@ -1,4 +1,4 @@
-module github.com/ConvertAPI/convertapi-go
+module github.com/ConvertAPI/convertapi-library-go
 
 go 1.22.2
 

@@ -7,7 +7,7 @@
 ConvertAPI helps in converting various file formats. Creating PDF and Images from various sources like Word, Excel, Powerpoint, images, web pages or raw HTML codes. Merge, Encrypt, Split, Repair and Decrypt PDF files and many other file manipulations. You can integrate it into your application in just a few minutes and use it easily.
 
 The ConvertAPI-Go library makes it easier to use the Convert API from your Go projects without having to build your own API calls.
-You can get your free API secret at https://www.convertapi.com/a
+You can get your free API token at https://www.convertapi.com/a/authentication
 
 ## Installation
 
@@ -21,10 +21,10 @@ go get github.com/ConvertAPI/convertapi-go
 
 ### Configuration
 
-You can get your secret at https://www.convertapi.com/a
+You can get your free API token at https://www.convertapi.com/a/authentication
 
 ```go
-config.Default = config.NewDefault(os.Getenv("your-api-secret-or-token"))
+config.Default = config.NewDefault(os.Getenv("api-token"))
 ```
 
 ### File conversion
@@ -111,7 +111,7 @@ import (
 )
 
 func main() {
-	config.Default = config.NewDefault(os.Getenv("your-api-secret-or-token"))
+	config.Default = config.NewDefault(os.Getenv("api-token"))
 
 	if file, errs := convertapi.ConvertPath("test.docx", "/tmp/result.pdf"); errs == nil {
 		fmt.Println("PDF file saved to: ", file.Name())
@@ -122,7 +122,7 @@ func main() {
 ```
 
 This is the bare-minimum to convert a file using the ConvertAPI client, but you can do a great deal more with the ConvertAPI Go library.
-Take special note that you should replace `your-api-secret` with the secret you obtained in item two of the pre-requisites.
+Take special note that you should replace `api-token` with the token you obtained in item two of the pre-requisites.
 
 
 ### Conversion Without Temporarily Storing Files on the ConvertAPI File Server

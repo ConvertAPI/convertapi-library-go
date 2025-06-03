@@ -16,8 +16,8 @@ func main() {
 	pipeReader, pipeWriter := io.Pipe()
 	multipartWriter := multipart.NewWriter(pipeWriter)
 
-	// Adjust URL according your converter and set YOUR_SECRET.
-	req, _ := http.NewRequest("POST", "https://v2.convertapi.com/convert/docx/to/pdf?secret=YOUR_SECRET", pipeReader)
+	// Adjust URL according your converter and set API_TOKEN.
+	req, _ := http.NewRequest("POST", "https://v2.convertapi.com/convert/docx/to/pdf?secret=API_TOKEN", pipeReader)
 	req.Header.Set("Content-Type", multipartWriter.FormDataContentType())
 	req.Header.Set("Accept", "multipart/mixed")
 

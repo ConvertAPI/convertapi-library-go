@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	secret := os.Getenv("CONVERTAPI_SECRET")
+	token := os.Getenv("API_TOKEN")
 
 	// Using convertapi.com server in Europe
 	domain, _ := url.Parse("https://eu-v2.convertapi.com")
@@ -21,7 +21,7 @@ func main() {
 	transport := &http.Transport{Proxy: http.ProxyURL(proxy)}
 
 	// Setting this configuration as default
-	config.Default = config.New(secret, domain, transport)
+	config.Default = config.New(token, domain, transport)
 
 	fmt.Println("Converting remote PPTX to PDF")
 	fileParam := param.NewString("file", "https://cdn.convertapi.com/cara/testfiles/presentation.pptx")

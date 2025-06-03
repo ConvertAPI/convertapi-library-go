@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	config.Default = config.NewDefault(os.Getenv("CONVERTAPI_SECRET")) // Get your secret at https://www.convertapi.com/a
+	config.Default = config.NewDefault(os.Getenv("API_TOKEN")) // Get your token at https://www.convertapi.com/a/authentication
 
 	fmt.Println("Converting PDF to JPG and compressing result files with ZIP")
 

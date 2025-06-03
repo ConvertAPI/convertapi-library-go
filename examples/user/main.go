@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	config.Default = config.NewDefault(os.Getenv("CONVERTAPI_SECRET")) // Get your secret at https://www.convertapi.com/a
+	config.Default = config.NewDefault(os.Getenv("API_TOKEN")) // Get your token at https://www.convertapi.com/a/authentication
 
 	if user, err := convertapi.UserInfo(nil); err == nil {
 		fmt.Println("User information: ")

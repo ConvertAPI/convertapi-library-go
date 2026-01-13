@@ -13,46 +13,46 @@ type ResFile struct {
 	resp     *http.Response
 	FileName string
 	FileSize int
-	FileId   string
-	Url      string
+	FileID   string
+	URL      string
 }
 
-func (this *ResFile) download() (err error) {
-	if this.resp == nil {
-		this.resp, err = this.client.Get(this.Url)
+func (f *ResFile) download() (err error) {
+	if f.resp == nil {
+		f.resp, err = f.client.Get(f.URL)
 	}
 	return
 }
 
-func (this *ResFile) Read(p []byte) (n int, err error) {
-	err = this.download()
+func (f *ResFile) Read(p []byte) (n int, err error) {
+	err = f.download()
 	if err == nil {
-		n, err = this.resp.Body.Read(p)
+		n, err = f.resp.Body.Read(p)
 		if err != nil {
-			this.resp.Body.Close()
-			this.resp = nil
+			f.resp.Body.Close()
+			f.resp = nil
 		}
 	}
 	return
 }
 
-func (this *ResFile) ToFile(file *os.File) (err error) {
-	_, err = io.Copy(file, this)
+func (f *ResFile) ToFile(file *os.File) (err error) {
+	_, err = io.Copy(file, f)
 	return
 }
 
-func (this *ResFile) ToPath(path string) (file *os.File, err error) {
+func (f *ResFile) ToPath(path string) (file *os.File, err error) {
 	if info, e := os.Stat(path); e == nil && info.IsDir() {
-		path = filepath.Join(path, this.FileName)
+		path = filepath.Join(path, f.FileName)
 	}
 
 	if file, err = os.Create(path); err == nil {
 		defer file.Close()
-		err = this.ToFile(file)
+		err = f.ToFile(file)
 	}
 	return
 }
 
-func (this *ResFile) Delete() error {
-	return lib.RequestDelete(this.Url, this.client)
+func (f *ResFile) Delete() error {
+	return lib.RequestDelete(f.URL, f.client)
 }

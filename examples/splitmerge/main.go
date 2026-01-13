@@ -12,11 +12,11 @@ func main() {
 	config.Default = config.NewDefault(os.Getenv("API_TOKEN")) // Get your token at https://www.convertapi.com/a/authentication
 
 	fmt.Println("Creating PDF with the first and the last pages")
-	splitRes := convertapi.ConvDef("pdf", "split",
+	splitRes := convertapi.ConvertDefault("pdf", "split",
 		param.NewPath("file", "assets/test.pdf", nil),
 	)
 
-	mergeRes := convertapi.ConvDef("pdf", "merge",
+	mergeRes := convertapi.ConvertDefault("pdf", "merge",
 		param.NewResultIdx("file", splitRes, 0, nil),
 		param.NewResultIdx("file", splitRes, -1, nil),
 	)

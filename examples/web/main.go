@@ -12,7 +12,7 @@ func main() {
 	config.Default = config.NewDefault(os.Getenv("API_TOKEN")) // Get your token at https://www.convertapi.com/a/authentication
 
 	fmt.Println("Converting WEB page to PDF")
-	webRes := convertapi.ConvDef("web", "pdf",
+	webRes := convertapi.ConvertDefault("web", "pdf",
 		param.NewString("url", "https://en.wikipedia.org/wiki/Data_conversion"),
 		param.NewString("filename", "web-example"),
 	)

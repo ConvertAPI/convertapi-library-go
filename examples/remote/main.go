@@ -12,7 +12,7 @@ func main() {
 	config.Default = config.NewDefault(os.Getenv("API_TOKEN")) // Get your token at https://www.convertapi.com/a/authentication
 
 	fmt.Println("Converting remote PPTX to PDF")
-	pptxRes := convertapi.ConvDef("pptx", "pdf",
+	pptxRes := convertapi.ConvertDefault("pptx", "pdf",
 		param.NewString("file", "https://cdn.convertapi.com/public/files/demo.pptx"))
 
 	if files, errs := pptxRes.ToPath("/tmp/converted.pdf"); errs == nil {

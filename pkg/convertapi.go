@@ -2,18 +2,19 @@ package convertapi
 
 import (
 	"fmt"
+	"net/url"
+	"os"
+
 	"github.com/ConvertAPI/convertapi-go/pkg/config"
 	"github.com/ConvertAPI/convertapi-go/pkg/lib"
 	"github.com/ConvertAPI/convertapi-go/pkg/param"
-	"net/url"
-	"os"
 )
 
-func ConvDef(fromFormat string, toFormat string, params ...param.IParam) (result *Result) {
+func ConvertDefault(fromFormat string, toFormat string, params ...param.Parameter) (result *Result) {
 	return Convert(fromFormat, toFormat, params, nil)
 }
 
-func Convert(fromFormat string, toFormat string, params []param.IParam, conf *config.Config) (result *Result) {
+func Convert(fromFormat string, toFormat string, params []param.Parameter, conf *config.Config) (result *Result) {
 	result = NewResult()
 	go func() {
 		if conf == nil {
@@ -49,12 +50,12 @@ func Convert(fromFormat string, toFormat string, params []param.IParam, conf *co
 		}
 		convertURL := conf.BaseURL.ResolveReference(pathURL)
 
-		result.start(convertURL.String(), values, conf.HttpClient)
+		result.start(convertURL.String(), values, conf.HTTPClient)
 	}()
 	return
 }
 
-func prepareValues(params []param.IParam) (vals map[string][]string, err error) {
+func prepareValues(params []param.Parameter) (vals map[string][]string, err error) {
 	vals = make(map[string][]string)
 	for _, p := range params {
 		paramVal, err := p.Values()
@@ -73,7 +74,7 @@ func prepareValues(params []param.IParam) (vals map[string][]string, err error) 
 }
 
 func ConvertPath(fromPath string, toPath string) (file *os.File, errs []error) {
-	res := Convert(lib.PathExt(fromPath), lib.PathExt(toPath), []param.IParam{
+	res := Convert(lib.PathExt(fromPath), lib.PathExt(toPath), []param.Parameter{
 		param.NewPath("file", fromPath, nil),
 	}, nil)
 

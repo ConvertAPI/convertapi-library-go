@@ -27,11 +27,11 @@ func TestConvertPath(t *testing.T) {
 
 func TestChained(t *testing.T) {
 	config.Default = config.NewDefault(authCred)
-	jpgRes := convertapi.Convert("docx", "jpg", []param.IParam{
+	jpgRes := convertapi.Convert("docx", "jpg", []param.Parameter{
 		param.NewPath("file", "assets/test.docx", nil),
 	}, nil)
 
-	zipRes := convertapi.Convert("any", "zip", []param.IParam{
+	zipRes := convertapi.Convert("any", "zip", []param.Parameter{
 		param.NewResult("file", jpgRes, nil),
 	}, nil)
 

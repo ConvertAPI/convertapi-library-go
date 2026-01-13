@@ -4,13 +4,13 @@ import (
 	"github.com/ConvertAPI/convertapi-go/pkg/config"
 )
 
-type IParam interface {
+type Parameter interface {
 	Prepare() error
 	Name() string
 	Values() ([]string, error)
 	Delete(conf *config.Config) []error
 }
 
-type IResult interface {
+type ResultParameter interface {
 	Ids() ([]string, error)
 }

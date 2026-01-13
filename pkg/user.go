@@ -31,7 +31,7 @@ func UserInfo(conf *config.Config) (user *User, err error) {
 	}
 
 	userURL := conf.BaseURL.ResolveReference(pathURL)
-	resp, err := lib.RespExtractErr(conf.HttpClient.Get(userURL.String()))
+	resp, err := lib.RespExtractErr(conf.HTTPClient.Get(userURL.String()))
 	if err == nil {
 		defer resp.Body.Close()
 		user = &User{}

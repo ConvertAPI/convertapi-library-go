@@ -15,9 +15,9 @@ func main() {
 
 	fmt.Println("Converting PDF to JPG and compressing result files with ZIP")
 
-	jpgRes := convertapi.ConvDef("docx", "jpg", param.NewPath("file", "assets/test.docx", nil))
+	jpgRes := convertapi.ConvertDefault("docx", "jpg", param.NewPath("file", "assets/test.docx", nil))
 
-	zipRes := convertapi.ConvDef("jpg", "zip", param.NewResult("file", jpgRes, nil))
+	zipRes := convertapi.ConvertDefault("jpg", "zip", param.NewResult("file", jpgRes, nil))
 
 	if cost, err := jpgRes.Cost(); lib.PrintErr(err) {
 		fmt.Println("DOCX -> JPG conversion cost: ", cost)

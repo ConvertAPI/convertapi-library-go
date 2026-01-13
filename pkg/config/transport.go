@@ -18,10 +18,10 @@ func NewCaTransport(authCred string, roundTripper http.RoundTripper) *CaTranspor
 	return &CaTransport{roundTripper, authCred}
 }
 
-func (this *CaTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+func (t *CaTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	runtime.Version()
 	agent := fmt.Sprintf("ConvertAPI-Go/%d (%s)", Version, runtime.GOOS)
 	req.Header.Add("User-Agent", agent)
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", this.AuthCred))
-	return this.RoundTripper.RoundTrip(req)
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", t.AuthCred))
+	return t.RoundTripper.RoundTrip(req)
 }

@@ -18,7 +18,7 @@ func main() {
 
 	reader := strings.NewReader("<!DOCTYPE html><html><head><title>My First Heading</title></head><body><h1>My First Heading</h1><p>My first paragraph.</p></body></html>\n")
 
-	htmlRes := convertapi.ConvDef("html", "txt",
+	htmlRes := convertapi.ConvertDefault("html", "txt",
 		// Reading source file body from the io.Reader
 		param.NewReader("file", reader, "page.html", nil),
 	)

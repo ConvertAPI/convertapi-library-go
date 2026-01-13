@@ -23,7 +23,7 @@ func NewResult() *Result {
 	return &Result{make(chan struct{}), nil, nil}
 }
 
-func (this *Result) start(url string, data *url.Values, client *http.Client) {
+func (r *Result) start(url string, data *url.Values, client *http.Client) {
 	if resp, err := lib.RespExtractErr(client.PostForm(url, *data)); err == nil {
 		defer resp.Body.Close()
 		response := &response{}
@@ -32,66 +32,66 @@ func (this *Result) start(url string, data *url.Values, client *http.Client) {
 		for _, file := range response.Files {
 			file.client = client
 		}
-		this.resolve(response)
+		r.resolve(response)
 	} else {
-		this.reject(err)
+		r.reject(err)
 	}
 }
 
-func (this *Result) Cost() (cost int, err error) {
-	<-this.waitCh
-	if this.response != nil {
-		cost = this.response.ConversionCost
+func (r *Result) Cost() (cost int, err error) {
+	<-r.waitCh
+	if r.response != nil {
+		cost = r.response.ConversionCost
 	}
-	return cost, this.err
+	return cost, r.err
 }
 
-func (this *Result) Files() (files []*ResFile, err error) {
-	<-this.waitCh
-	if this.response != nil {
-		files = this.response.Files
+func (r *Result) Files() (files []*ResFile, err error) {
+	<-r.waitCh
+	if r.response != nil {
+		files = r.response.Files
 	}
-	return files, this.err
+	return files, r.err
 }
 
-func (this *Result) Ids() (ids []string, err error) {
-	files, err := this.Files()
+func (r *Result) Ids() (ids []string, err error) {
+	files, err := r.Files()
 	if err == nil {
 		for _, file := range files {
-			ids = append(ids, file.FileId)
+			ids = append(ids, file.FileID)
 		}
 	}
 	return
 }
 
-func (this *Result) Urls() (urls []string, err error) {
-	files, err := this.Files()
+func (r *Result) Urls() (urls []string, err error) {
+	files, err := r.Files()
 	if err == nil {
 		for _, file := range files {
-			urls = append(urls, file.Url)
+			urls = append(urls, file.URL)
 		}
 	}
 	return
 }
 
-func (this *Result) Read(p []byte) (n int, err error) {
-	files, err := this.Files()
+func (r *Result) Read(p []byte) (n int, err error) {
+	files, err := r.Files()
 	if err == nil {
 		return files[0].Read(p)
 	}
 	return
 }
 
-func (this *Result) ToFile(file *os.File) (err error) {
-	files, err := this.Files()
+func (r *Result) ToFile(file *os.File) (err error) {
+	files, err := r.Files()
 	if err == nil {
 		return files[0].ToFile(file)
 	}
 	return
 }
 
-func (this *Result) ToPath(path string) (files []*os.File, errs []error) {
-	if resFiles, err := this.Files(); lib.AddErr(&errs, err) {
+func (r *Result) ToPath(path string) (files []*os.File, errs []error) {
+	if resFiles, err := r.Files(); lib.AddErr(&errs, err) {
 		if !lib.IsDir(path) {
 			resFiles = []*ResFile{resFiles[0]}
 		}
@@ -105,8 +105,8 @@ func (this *Result) ToPath(path string) (files []*os.File, errs []error) {
 	return
 }
 
-func (this *Result) Delete() (errs []error) {
-	if files, err := this.Files(); lib.AddErr(&errs, err) {
+func (r *Result) Delete() (errs []error) {
+	if files, err := r.Files(); lib.AddErr(&errs, err) {
 		for _, file := range files {
 			lib.AddErr(&errs, file.Delete())
 		}
@@ -114,12 +114,12 @@ func (this *Result) Delete() (errs []error) {
 	return
 }
 
-func (this *Result) resolve(response *response) {
-	this.response = response
-	close(this.waitCh)
+func (r *Result) resolve(response *response) {
+	r.response = response
+	close(r.waitCh)
 }
 
-func (this *Result) reject(err error) {
-	this.err = err
-	close(this.waitCh)
+func (r *Result) reject(err error) {
+	r.err = err
+	close(r.waitCh)
 }

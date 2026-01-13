@@ -25,25 +25,25 @@ func NewReader(name string, reader io.Reader, filename string, conf *config.Conf
 	return &ParamReader{*New(name), reader, filename, conf, sync.Mutex{}}
 }
 
-func (this *ParamReader) Prepare() error {
-	this.Lock()
-	defer this.Unlock()
+func (pr *ParamReader) Prepare() error {
+	pr.Lock()
+	defer pr.Unlock()
 
-	if this.values == nil {
-		if err := this.Param.Prepare(); err != nil {
+	if pr.values == nil {
+		if err := pr.Param.Prepare(); err != nil {
 			return err
 		}
 
 		query := url.Values{}
-		query.Add("filename", this.fileName)
+		query.Add("filename", pr.fileName)
 
 		pathURL, err := url.Parse("/v3/upload?" + query.Encode())
 		if err != nil {
 			return err
 		}
 
-		uploadURL := this.config.BaseURL.ResolveReference(pathURL)
-		resp, err := this.config.HttpClient.Post(uploadURL.String(), "application/octet-stream", this.reader)
+		uploadURL := pr.config.BaseURL.ResolveReference(pathURL)
+		resp, err := pr.config.HTTPClient.Post(uploadURL.String(), "application/octet-stream", pr.reader)
 
 		if err != nil {
 			return err
@@ -54,16 +54,16 @@ func (this *ParamReader) Prepare() error {
 		if _, err := buf.ReadFrom(resp.Body); err != nil {
 			return err
 		}
-		this.values = []string{buf.String()}
+		pr.values = []string{buf.String()}
 	}
 	return nil
 }
 
-func (this *ParamReader) Values() ([]string, error) {
-	err := this.Prepare()
-	return this.values, err
+func (pr *ParamReader) Values() ([]string, error) {
+	err := pr.Prepare()
+	return pr.values, err
 }
 
-func (this *ParamReader) String() string {
-	return fmt.Sprintf("%s: %s -> %s", this.name, this.fileName, strings.Join(this.values, " "))
+func (pr *ParamReader) String() string {
+	return fmt.Sprintf("%s: %s -> %s", pr.name, pr.fileName, strings.Join(pr.values, " "))
 }

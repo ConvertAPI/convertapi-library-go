@@ -43,30 +43,30 @@ func NewBool(name string, value bool) *Param {
 	return NewString(name, strconv.FormatBool(value))
 }
 
-func (this *Param) Prepare() error {
-	return this.err
+func (p *Param) Prepare() error {
+	return p.err
 }
 
-func (this *Param) Name() string {
-	return strings.ToLower(this.name)
+func (p *Param) Name() string {
+	return strings.ToLower(p.name)
 }
 
-func (this *Param) Values() ([]string, error) {
-	return this.values, this.err
+func (p *Param) Values() ([]string, error) {
+	return p.values, p.err
 }
 
-func (this *Param) String() string {
-	return fmt.Sprintf("%s: %s", this.name, strings.Join(this.values, " "))
+func (p *Param) String() string {
+	return fmt.Sprintf("%s: %s", p.name, strings.Join(p.values, " "))
 }
 
-func (this *Param) Delete(conf *config.Config) (errs []error) {
+func (p *Param) Delete(conf *config.Config) (errs []error) {
 	if conf == nil {
 		conf = config.Default
 	}
-	if urls, err := this.Values(); lib.AddErr(&errs, err) {
+	if urls, err := p.Values(); lib.AddErr(&errs, err) {
 		for _, val := range urls {
 			if _, err := url.ParseRequestURI(val); lib.AddErr(&errs, err) {
-				lib.AddErr(&errs, lib.RequestDelete(val, conf.HttpClient))
+				lib.AddErr(&errs, lib.RequestDelete(val, conf.HTTPClient))
 			}
 		}
 	}

@@ -7,12 +7,12 @@ import (
 
 type ParamResult struct {
 	Param
-	res    IResult
+	res    ResultParameter
 	config *config.Config
 	sync.Mutex
 }
 
-func NewResult(name string, res IResult, conf *config.Config) (param *ParamResult) {
+func NewResult(name string, res ResultParameter, conf *config.Config) (param *ParamResult) {
 	if conf == nil {
 		conf = config.Default
 	}
@@ -20,27 +20,27 @@ func NewResult(name string, res IResult, conf *config.Config) (param *ParamResul
 	return
 }
 
-func (this *ParamResult) Prepare() error {
-	this.Lock()
-	defer this.Unlock()
+func (pr *ParamResult) Prepare() error {
+	pr.Lock()
+	defer pr.Unlock()
 
-	if this.values == nil {
-		if err := this.Param.Prepare(); err != nil {
+	if pr.values == nil {
+		if err := pr.Param.Prepare(); err != nil {
 			return err
 		}
 
-		ids, err := this.res.Ids()
+		ids, err := pr.res.Ids()
 		if err != nil {
 			return err
 		}
 		for _, fid := range ids {
-			this.values = append(this.values, fid)
+			pr.values = append(pr.values, fid)
 		}
 	}
 	return nil
 }
 
-func (this *ParamResult) Values() ([]string, error) {
-	err := this.Prepare()
-	return this.values, err
+func (pr *ParamResult) Values() ([]string, error) {
+	err := pr.Prepare()
+	return pr.values, err
 }

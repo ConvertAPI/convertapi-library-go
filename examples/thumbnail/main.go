@@ -12,12 +12,12 @@ func main() {
 	config.Default = config.NewDefault(os.Getenv("API_TOKEN")) // Get your token at https://www.convertapi.com/a/authentication
 
 	fmt.Println("Creating PDF thumbnail")
-	extractRes := convertapi.ConvDef("pdf", "jpg",
+	extractRes := convertapi.ConvertDefault("pdf", "jpg",
 		param.NewPath("file", "assets/test.pdf", nil),
 		param.NewString("pagerange", "1"),
 	)
 
-	jpgRes := convertapi.ConvDef("jpg", "jpg",
+	jpgRes := convertapi.ConvertDefault("jpg", "jpg",
 		param.NewResult("file", extractRes, nil),
 		param.NewBool("scaleimage", true),
 		param.NewBool("scaleproportions", true),

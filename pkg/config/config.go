@@ -10,14 +10,14 @@ var Default *Config
 type Config struct {
 	BaseURL     *url.URL
 	CaTransport *CaTransport
-	HttpClient  *http.Client
+	HTTPClient  *http.Client
 }
 
 func NewDefault(authCred string) *Config {
-	baseUrl, _ := url.ParseRequestURI("https://api.convertapi.io")
+	baseURL, _ := url.ParseRequestURI("https://api.convertapi.io")
 	transport := NewCaTransport(authCred, nil)
 	client := &http.Client{Transport: transport}
-	return &Config{baseUrl, transport, client}
+	return &Config{baseURL, transport, client}
 }
 
 func New(authCred string, url *url.URL, transport *http.Transport) *Config {
@@ -26,5 +26,5 @@ func New(authCred string, url *url.URL, transport *http.Transport) *Config {
 	}
 
 	caTransport := NewCaTransport(authCred, transport)
-	return &Config{BaseURL: url, HttpClient: &http.Client{Transport: caTransport}}
+	return &Config{BaseURL: url, HTTPClient: &http.Client{Transport: caTransport}}
 }

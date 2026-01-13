@@ -18,7 +18,7 @@ func NewFile(name string, file *os.File, conf *config.Config) *ParamFile {
 	return &ParamFile{*paramReader, file.Name()}
 }
 
-func NewPath(name string, path string, conf *config.Config) IParam {
+func NewPath(name string, path string, conf *config.Config) Parameter {
 	file, err := os.Open(path)
 	if err != nil {
 		return NewError(name, err)
@@ -26,20 +26,20 @@ func NewPath(name string, path string, conf *config.Config) IParam {
 	return NewFile(name, file, conf)
 }
 
-func (this *ParamFile) Prepare() error {
-	file, err := os.Open(this.filePath)
+func (pf *ParamFile) Prepare() error {
+	file, err := os.Open(pf.filePath)
 	if err != nil {
 		return err
 	}
-	this.reader = file
-	return this.ParamReader.Prepare()
+	pf.reader = file
+	return pf.ParamReader.Prepare()
 }
 
-func (this *ParamFile) Values() ([]string, error) {
-	err := this.Prepare()
-	return this.values, err
+func (pf *ParamFile) Values() ([]string, error) {
+	err := pf.Prepare()
+	return pf.values, err
 }
 
-func (this *ParamFile) String() string {
-	return fmt.Sprintf("%s: %s -> %s", this.name, this.filePath, strings.Join(this.values, " "))
+func (pf *ParamFile) String() string {
+	return fmt.Sprintf("%s: %s -> %s", pf.name, pf.filePath, strings.Join(pf.values, " "))
 }

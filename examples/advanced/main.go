@@ -25,7 +25,7 @@ func main() {
 
 	fmt.Println("Converting remote PPTX to PDF")
 	fileParam := param.NewString("file", "https://cdn.convertapi.com/cara/testfiles/presentation.pptx")
-	pptxRes := convertapi.Convert("pptx", "pdf", []param.IParam{fileParam}, nil)
+	pptxRes := convertapi.Convert("pptx", "pdf", []param.Parameter{fileParam}, nil)
 
 	if files, errs := pptxRes.ToPath("/tmp/converted.pdf"); errs == nil {
 		fmt.Println("PDF file saved to: ", files[0].Name())

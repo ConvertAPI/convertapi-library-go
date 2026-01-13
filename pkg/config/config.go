@@ -14,7 +14,7 @@ type Config struct {
 }
 
 func NewDefault(authCred string) *Config {
-	baseUrl, _ := url.ParseRequestURI("https://v2.convertapi.com")
+	baseUrl, _ := url.ParseRequestURI("https://api.convertapi.io")
 	transport := NewCaTransport(authCred, nil)
 	client := &http.Client{Transport: transport}
 	return &Config{baseUrl, transport, client}

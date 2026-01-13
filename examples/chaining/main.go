@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/ConvertAPI/convertapi-go/pkg"
 	"github.com/ConvertAPI/convertapi-go/pkg/config"
 	"github.com/ConvertAPI/convertapi-go/pkg/lib"
 	"github.com/ConvertAPI/convertapi-go/pkg/param"
-	"os"
 )
 
 func main() {
@@ -16,7 +17,7 @@ func main() {
 
 	jpgRes := convertapi.ConvDef("docx", "jpg", param.NewPath("file", "assets/test.docx", nil))
 
-	zipRes := convertapi.ConvDef("jpg", "zip", param.NewResult("files", jpgRes, nil))
+	zipRes := convertapi.ConvDef("jpg", "zip", param.NewResult("file", jpgRes, nil))
 
 	if cost, err := jpgRes.Cost(); lib.PrintErr(err) {
 		fmt.Println("DOCX -> JPG conversion cost: ", cost)

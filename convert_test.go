@@ -32,7 +32,7 @@ func TestChained(t *testing.T) {
 	}, nil)
 
 	zipRes := convertapi.Convert("any", "zip", []param.IParam{
-		param.NewResult("files", jpgRes, nil),
+		param.NewResult("file", jpgRes, nil),
 	}, nil)
 
 	zipCost, err := zipRes.Cost()

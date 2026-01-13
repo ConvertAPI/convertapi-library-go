@@ -17,8 +17,8 @@ func main() {
 	)
 
 	mergeRes := convertapi.ConvDef("pdf", "merge",
-		param.NewResultIdx("files", splitRes, 0, nil),
-		param.NewResultIdx("files", splitRes, -1, nil),
+		param.NewResultIdx("file", splitRes, 0, nil),
+		param.NewResultIdx("file", splitRes, -1, nil),
 	)
 
 	if files, errs := mergeRes.ToPath("/tmp"); errs == nil {

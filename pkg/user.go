@@ -24,7 +24,7 @@ func UserInfo(conf *config.Config) (user *User, err error) {
 		conf = config.Default
 	}
 	query := url.Values{}
-	path := fmt.Sprintf("/user?%s", query.Encode())
+	path := fmt.Sprintf("/v3/user?%s", query.Encode())
 	pathURL, err := url.Parse(path)
 	if err != nil {
 		return

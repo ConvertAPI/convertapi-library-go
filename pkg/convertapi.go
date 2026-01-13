@@ -28,21 +28,20 @@ func Convert(fromFormat string, toFormat string, params []param.IParam, conf *co
 			return
 		}
 
+		values.Add("storefile", "true")
 		for name, vals := range paramVals {
 			if !lib.Contains(ignoreParams, name) {
 				if len(vals) == 1 {
 					values.Add(name, vals[0])
 				} else {
-					for i, val := range vals {
-						values.Add(fmt.Sprintf("%s[%d]", name, i), val)
+					for _, val := range vals {
+						values.Add(name, val)
 					}
 				}
 			}
 		}
 
-		query := url.Values{}
-		query.Add("storefile", "true")
-		path := fmt.Sprintf("/convert/%s/to/%s?%s", fromFormat, toFormat, query.Encode())
+		path := fmt.Sprintf("/v3/convert/%s/to/%s", fromFormat, toFormat)
 		pathURL, err := url.Parse(path)
 		if err != nil {
 			result.reject(err)

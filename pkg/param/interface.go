@@ -12,5 +12,5 @@ type IParam interface {
 }
 
 type IResult interface {
-	Urls() ([]string, error)
+	Ids() ([]string, error)
 }

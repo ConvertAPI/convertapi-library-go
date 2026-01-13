@@ -54,6 +54,16 @@ func (this *Result) Files() (files []*ResFile, err error) {
 	return files, this.err
 }
 
+func (this *Result) Ids() (ids []string, err error) {
+	files, err := this.Files()
+	if err == nil {
+		for _, file := range files {
+			ids = append(ids, file.FileId)
+		}
+	}
+	return
+}
+
 func (this *Result) Urls() (urls []string, err error) {
 	files, err := this.Files()
 	if err == nil {

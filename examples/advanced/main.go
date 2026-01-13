@@ -14,7 +14,7 @@ func main() {
 	token := os.Getenv("API_TOKEN")
 
 	// Using convertapi.com server in Europe
-	domain, _ := url.Parse("https://eu-v2.convertapi.com")
+	domain, _ := url.Parse("https://eu-api.convertapi.io")
 
 	// Using HTTP proxy server
 	proxy, _ := url.Parse("http://127.0.0.1:8888")

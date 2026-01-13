@@ -29,12 +29,12 @@ func (this *ParamResult) Prepare() error {
 			return err
 		}
 
-		urls, err := this.res.Urls()
+		ids, err := this.res.Ids()
 		if err != nil {
 			return err
 		}
-		for _, url := range urls {
-			this.values = append(this.values, url)
+		for _, fid := range ids {
+			this.values = append(this.values, fid)
 		}
 	}
 	return nil

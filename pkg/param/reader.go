@@ -37,7 +37,7 @@ func (this *ParamReader) Prepare() error {
 		query := url.Values{}
 		query.Add("filename", this.fileName)
 
-		pathURL, err := url.Parse("/upload?" + query.Encode())
+		pathURL, err := url.Parse("/v3/upload?" + query.Encode())
 		if err != nil {
 			return err
 		}

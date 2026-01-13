@@ -13,6 +13,7 @@ type ResFile struct {
 	resp     *http.Response
 	FileName string
 	FileSize int
+	FileId   string
 	Url      string
 }
 

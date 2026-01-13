@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"mime"
 	"mime/multipart"
@@ -17,7 +18,8 @@ func main() {
 	multipartWriter := multipart.NewWriter(pipeWriter)
 
 	// Adjust URL according your converter and set API_TOKEN.
-	req, _ := http.NewRequest("POST", "https://v2.convertapi.com/convert/docx/to/pdf?secret=API_TOKEN", pipeReader)
+	req, _ := http.NewRequest("POST", "https://api.convertapi.io/v3/convert/docx/to/pdf", pipeReader)
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", os.Getenv("API_TOKEN")))
 	req.Header.Set("Content-Type", multipartWriter.FormDataContentType())
 	req.Header.Set("Accept", "multipart/mixed")
 

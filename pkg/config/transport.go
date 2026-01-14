@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"runtime"
 )
 
@@ -12,7 +13,7 @@ type CaTransport struct {
 }
 
 func NewCaTransport(authCred string, roundTripper http.RoundTripper) *CaTransport {
-	if roundTripper == nil {
+	if roundTripper == nil || (reflect.ValueOf(roundTripper).Kind() == reflect.Ptr && reflect.ValueOf(roundTripper).IsNil()) {
 		roundTripper = http.DefaultTransport
 	}
 	return &CaTransport{roundTripper, authCred}

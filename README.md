@@ -88,10 +88,20 @@ conversionsTotal := user.ConversionsTotal
 conversionsConsumed := user.ConversionsConsumed
 ```
 
-### Alternative domain
+### Set conversion location (optional)
+
+You can choose from multiple conversion locations, including the EU API location for GDPR compliance.
+However, this selection is optional as ConvertAPI automatically detects the nearest server using GEO DNS.
+For more details, visit [ConvertAPI Servers Location](https://www.convertapi.com/doc/servers-location).
+
+```go
+// Using convertapi.io server in Europe    
+u, _ := url.Parse("https://eu-api.convertapi.io")
+config.Default = config.New(token, u, nil)
+```
 
 How to set an alternative domain can be found in the [advanced example](https://github.com/ConvertAPI/convertapi-go/blob/master/examples/advanced/main.go).
-Dedicated to the region [domain list](https://www.convertapi.com/doc/servers-location).
+
 
 ### More examples
 

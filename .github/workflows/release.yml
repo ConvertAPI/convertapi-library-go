@@ -167,11 +167,10 @@ jobs:
         run: |
           set -uo pipefail
           cd "$(mktemp -d)"
-          # The proxy's URLs spell capital letters as !lowercase.
-          ESCAPED=$(sed 's/[A-Z]/!\L&/g' <<<"$MODULE")
           for _ in $(seq 1 10); do
+            # The Origin is the proxy's record of the commit it fetched the version from.
             if JSON=$(go mod download -json "$MODULE@$TAG"); then
-              ORIGIN=$(curl -fsS "$GOPROXY/$ESCAPED/@v/$TAG.info" | jq -r '.Origin.Hash // empty') || ORIGIN=''
+              ORIGIN=$(jq -r '.Origin.Hash // empty' <<<"$JSON") || ORIGIN=''
               if [ "$ORIGIN" = "$SHA" ]; then
                 jq -r '"\(.Path) \(.Version)  \(.Sum)"' <<<"$JSON"
                 echo "The proxy serves $MODULE $TAG from $SHA, and sum.golang.org has its checksum"

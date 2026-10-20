@@ -116,19 +116,29 @@ jobs:
             echo "::error file=pkg/config/version.go::config.Version $VERSION needs the module path github.com/ConvertAPI/convertapi-go/v${VERSION%%.*} (see RELEASING.md)"
             exit 1
           fi
-          LATEST=$(git tag --list 'v*' | { grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' || true; } | sed 's/^v//' | sort -V | tail -n1)
-          if [ -n "$LATEST" ] && [ "$(printf '%s\n%s\n' "$LATEST" "${VERSION%%-*}" | sort -V | tail -n1)" != "${VERSION%%-*}" ]; then
-            echo "::error file=pkg/config/version.go::config.Version $VERSION is lower than the latest release $LATEST"
+          # The highest v* tag by SemVer precedence, pre-releases included (sort -V does not implement it:
+          # 1.1.0-beta.2 < 1.1.0, and 1.1.0-beta.10 > 1.1.0-beta.2).
+          read -r LATEST BEHIND < <(git tag --list 'v*' | python3 -c '
+          import re, sys
+          def key(v):
+              core, _, pre = v.partition("-")
+              ids = tuple((0, int(i), "") if i.isdigit() else (1, 0, i) for i in pre.split(".")) if pre else ()
+              return tuple(map(int, core.split("."))), not pre, ids
+          ok = re.compile(r"^v\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$")
+          tags = [t[1:] for t in sys.stdin.read().split() if ok.match(t)]
+          latest = max(tags, key=key, default="")
+          print(latest or "none", "yes" if latest and key(sys.argv[1]) < key(latest) else "no")
+          ' "$VERSION")
+          if [ -z "${BEHIND:-}" ]; then
+            echo "::error::Could not compare config.Version with the v* tags"
             exit 1
-          fi
-          # SemVer sorts 1.0.1-beta.1 below 1.0.1, so a pre-release of the latest release is a step back.
-          if [[ "$VERSION" == *-* ]] && [ "${VERSION%%-*}" = "$LATEST" ]; then
-            echo "::error file=pkg/config/version.go::config.Version $VERSION is a pre-release of $LATEST, which is already released"
+          elif [ "$BEHIND" = yes ]; then
+            echo "::error file=pkg/config/version.go::config.Version $VERSION is lower than the latest release $LATEST"
             exit 1
           fi
           {
             echo "version=$VERSION"
-            echo "latest=${LATEST:-none}"
+            echo "latest=$LATEST"
           } >> "$GITHUB_OUTPUT"
 
       - name: Summary

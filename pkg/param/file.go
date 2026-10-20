@@ -14,8 +14,14 @@ type ParamFile struct {
 }
 
 func NewFile(name string, file *os.File, conf *config.Config) *ParamFile {
-	paramReader := NewReader(name, file, filepath.Base(file.Name()), conf)
-	return &ParamFile{*paramReader, file.Name()}
+	if conf == nil {
+		conf = config.Default
+	}
+	// Built in place: copying a ParamReader would copy its mutex.
+	return &ParamFile{
+		ParamReader: ParamReader{Param: *New(name), reader: file, fileName: filepath.Base(file.Name()), config: conf},
+		filePath:    file.Name(),
+	}
 }
 
 func NewPath(name string, path string, conf *config.Config) IParam {

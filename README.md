@@ -1,6 +1,7 @@
 # ConvertAPI Go Client
 
-![example workflow](https://github.com/ConvertAPI/convertapi-go/actions/workflows/tests.yml/badge.svg)
+[![Build](https://github.com/ConvertAPI/convertapi-library-go/actions/workflows/build.yml/badge.svg)](https://github.com/ConvertAPI/convertapi-library-go/actions/workflows/build.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/ConvertAPI/convertapi-go.svg)](https://pkg.go.dev/github.com/ConvertAPI/convertapi-go)
 
 ## Convert your files with our online file conversion API
 
@@ -11,11 +12,17 @@ You can get your free API token at https://www.convertapi.com/a/authentication
 
 ## Installation
 
-Execute this command in your GOPATH:
+Add the library to your Go module:
 
 ```shell
-go get github.com/ConvertAPI/convertapi-go
+go get github.com/ConvertAPI/convertapi-go@v1.0.0
 ```
+
+The module path is `github.com/ConvertAPI/convertapi-go` (this repository's former name), and the
+packages you import are `github.com/ConvertAPI/convertapi-go/pkg` (package `convertapi`),
+`.../pkg/config` and `.../pkg/param`. Releases are listed on the
+[releases page](https://github.com/ConvertAPI/convertapi-library-go/releases) and in the
+[changelog](CHANGELOG.md). The library is tested on the two latest Go releases.
 
 ## Usage
 
@@ -90,12 +97,12 @@ conversionsConsumed := user.ConversionsConsumed
 
 ### Alternative domain
 
-How to set an alternative domain can be found in the [advanced example](https://github.com/ConvertAPI/convertapi-go/blob/master/examples/advanced/main.go).
+How to set an alternative domain can be found in the [advanced example](https://github.com/ConvertAPI/convertapi-library-go/blob/main/examples/advanced/main.go).
 Dedicated to the region [domain list](https://www.convertapi.com/doc/servers-location).
 
 ### More examples
 
-Find more advanced examples in the [examples](https://github.com/ConvertAPI/convertapi-go/tree/master/examples) folder.
+Find more advanced examples in the [examples](https://github.com/ConvertAPI/convertapi-library-go/tree/main/examples) folder.
 
 #### Converting your first file, full example:
 
@@ -105,9 +112,11 @@ ConvertAPI is designed to make converting file super easy. The following snippet
 package main
 
 import (
-	"github.com/ConvertAPI/convertapi-go"
 	"fmt"
 	"os"
+
+	"github.com/ConvertAPI/convertapi-go/pkg"
+	"github.com/ConvertAPI/convertapi-go/pkg/config"
 )
 
 func main() {
@@ -139,4 +148,4 @@ Please leave all comments, bugs, requests, and issues on the Issues page. We'll 
 
 ### License
 The ConvertAPI Go Library is licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php "Read more about the MIT license form") license.
-Refer to the [LICENSE](https://github.com/ConvertAPI/convertapi-go/blob/master/LICENSE) file for more information.
+Refer to the [LICENSE](https://github.com/ConvertAPI/convertapi-library-go/blob/main/LICENSE.txt) file for more information.

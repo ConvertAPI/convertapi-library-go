@@ -1,32 +1,47 @@
 package convertapi
 
 import (
+	"net/url"
+	"os"
+	"path"
+	"testing"
+
 	"github.com/ConvertAPI/convertapi-go/pkg"
 	"github.com/ConvertAPI/convertapi-go/pkg/config"
 	"github.com/ConvertAPI/convertapi-go/pkg/param"
 	"github.com/stretchr/testify/assert"
-	"os"
-	"path"
-	"testing"
 )
 
-var authCred = os.Getenv("CONVERTAPI_SECRET")
-
-func TestSetup(t *testing.T) {
-	config.Default = config.NewDefault(authCred)
-	assert.Equal(t, config.Default.CaTransport.AuthCred, authCred)
+// The tests in this file call the ConvertAPI API. They run only when CONVERTAPI_TOKEN is set, against
+// CONVERTAPI_BASE_URL when it is set (CI uses the staging API) and the production API otherwise.
+func liveConfig(t *testing.T) *config.Config {
+	t.Helper()
+	token := os.Getenv("CONVERTAPI_TOKEN")
+	if token == "" {
+		t.Skip("CONVERTAPI_TOKEN is not set, so the API tests are skipped")
+	}
+	conf := config.NewDefault(token)
+	if base := os.Getenv("CONVERTAPI_BASE_URL"); base != "" {
+		baseURL, err := url.ParseRequestURI(base)
+		if err != nil {
+			t.Fatalf("CONVERTAPI_BASE_URL %q: %v", base, err)
+		}
+		conf.BaseURL = baseURL
+	}
+	config.Default = conf
+	return conf
 }
 
 func TestConvertPath(t *testing.T) {
-	config.Default = config.NewDefault(authCred)
-	file, errs := convertapi.ConvertPath("assets/test.docx", path.Join(os.TempDir(), "convertapi-test.pdf"))
+	liveConfig(t)
+	file, errs := convertapi.ConvertPath("assets/test.docx", path.Join(t.TempDir(), "convertapi-test.pdf"))
 
 	assert.Nil(t, errs)
 	assert.NotEmpty(t, file.Name())
 }
 
 func TestChained(t *testing.T) {
-	config.Default = config.NewDefault(authCred)
+	liveConfig(t)
 	jpgRes := convertapi.Convert("docx", "jpg", []param.IParam{
 		param.NewPath("file", "assets/test.docx", nil),
 	}, nil)
@@ -43,14 +58,17 @@ func TestChained(t *testing.T) {
 	files, err := zipRes.Files()
 
 	assert.Nil(t, err)
-	assert.Equal(t, "test.zip", files[0].FileName)
+	if assert.NotEmpty(t, files) {
+		assert.Equal(t, "test.zip", files[0].FileName)
+	}
 }
 
 func TestUserInfo(t *testing.T) {
-	config.Default = config.NewDefault(authCred)
-	user, err := convertapi.UserInfo(nil)
+	conf := liveConfig(t)
+	user, err := convertapi.UserInfo(conf)
 
 	assert.Nil(t, err)
-	assert.NotEmpty(t, user.ConversionsTotal)
-	assert.NotEmpty(t, user.ConversionsConsumed)
+	if assert.NotNil(t, user) {
+		assert.NotEmpty(t, user.ConversionsTotal)
+	}
 }

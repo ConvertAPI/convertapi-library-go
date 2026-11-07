@@ -104,6 +104,19 @@ Dedicated to the region [domain list](https://www.convertapi.com/doc/servers-loc
 
 Find more advanced examples in the [examples](https://github.com/ConvertAPI/convertapi-library-go/tree/main/examples) folder.
 
+- [advanced/main.go](https://github.com/ConvertAPI/convertapi-library-go/blob/main/examples/advanced/main.go) - Use the EU server and an HTTP proxy, then convert a remote PPTX to PDF
+- [chaining/main.go](https://github.com/ConvertAPI/convertapi-library-go/blob/main/examples/chaining/main.go) - Chain two conversions: DOCX to JPG images, then the images to a ZIP
+- [direct/main.go](https://github.com/ConvertAPI/convertapi-library-go/blob/main/examples/direct/main.go) - Convert DOCX to PDF with plain Go (net/http), without this library
+- [parallel/main.go](https://github.com/ConvertAPI/convertapi-library-go/blob/main/examples/parallel/main.go) - Convert one DOCX file to PDF and JPG in parallel
+- [remote/main.go](https://github.com/ConvertAPI/convertapi-library-go/blob/main/examples/remote/main.go) - Convert a remote file (a PPTX at a URL) to PDF
+- [simple/main.go](https://github.com/ConvertAPI/convertapi-library-go/blob/main/examples/simple/main.go) - Convert a DOCX file to PDF in one call
+- [splitmerge/main.go](https://github.com/ConvertAPI/convertapi-library-go/blob/main/examples/splitmerge/main.go) - Make a new PDF from the first and last pages of a PDF
+- [streams/main.go](https://github.com/ConvertAPI/convertapi-library-go/blob/main/examples/streams/main.go) - Convert HTML from a stream to TXT
+- [thumbnail/main.go](https://github.com/ConvertAPI/convertapi-library-go/blob/main/examples/thumbnail/main.go) - Turn the first page of a PDF into a JPG thumbnail
+- [token/main.go](https://github.com/ConvertAPI/convertapi-library-go/blob/main/examples/token/main.go) - Authenticate with a ConvertAPI access token and convert DOCX to PDF
+- [user/main.go](https://github.com/ConvertAPI/convertapi-library-go/blob/main/examples/user/main.go) - Retrieve your ConvertAPI account information
+- [web/main.go](https://github.com/ConvertAPI/convertapi-library-go/blob/main/examples/web/main.go) - Convert a web page URL to PDF
+
 #### Converting your first file, full example:
 
 ConvertAPI is designed to make converting file super easy. The following snippet shows how easy it is to get started. Let's convert a WORD DOCX file to PDF:

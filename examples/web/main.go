@@ -13,7 +13,7 @@ func main() {
 
 	fmt.Println("Converting WEB page to PDF")
 	webRes := convertapi.ConvDef("html", "pdf",
-		param.NewString("url", "https://en.wikipedia.org/wiki/Data_conversion"),
+		param.NewString("url", "https://cdn.convertapi.com/public/files/demo"),
 		param.NewString("filename", "web-example"),
 	)
 

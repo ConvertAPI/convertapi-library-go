@@ -78,10 +78,11 @@ All conversion parameters and explanations can be found [here](https://www.conve
 
 ```go
 jpgRes := convertapi.ConvDef("pdf", "jpg",
-    param.NewResult("file", extractRes, nil),
-    param.NewBool("scaleimage", true),
-    param.NewBool("scaleproportions", true),
+    param.NewPath("file", "test.pdf", nil),
+    param.NewString("pagerange", "1"),
+    param.NewInt("imagewidth", 300),
     param.NewInt("imageheight", 300),
+    param.NewBool("fittosize", true),
 )
 ```
 

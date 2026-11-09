@@ -16,7 +16,7 @@ func main() {
 
 	jpgRes := convertapi.ConvDef("docx", "jpg", param.NewPath("file", "assets/test.docx", nil))
 
-	zipRes := convertapi.ConvDef("jpg", "zip", param.NewResult("files", jpgRes, nil))
+	zipRes := convertapi.ConvDef("file", "zip", param.NewResult("files", jpgRes, nil))
 
 	if cost, err := jpgRes.Cost(); lib.PrintErr(err) {
 		fmt.Println("DOCX -> JPG conversion cost: ", cost)

@@ -31,13 +31,13 @@ packages you import are `github.com/ConvertAPI/convertapi-go/pkg` (package `conv
 You can get your free API token at https://www.convertapi.com/a/authentication
 
 ```go
-config.Default = config.NewDefault(os.Getenv("api-token"))
+config.Default = config.NewDefault("api-token")
 ```
 
 ### File conversion
 
 Convert DOCX file to PDF example.
-All supported formats and options can be found [here](https://www.convertapi.com/conversions).
+All supported formats and options can be found [here](https://www.convertapi.com/api).
 
 ```go
 pdfRes := convertapi.ConvDef("docx", "pdf", param.NewPath("file", "test.docx", nil))
@@ -50,17 +50,17 @@ Other result operations:
 
 ```go
 // save all result files to folder
-res.ToPath("/tmp")
+pdfRes.ToPath("/tmp")
 
 // get second file in result
-files, err := res.Files()
+files, err := pdfRes.Files()
 secondFile := files[1]
 
-// result implements Reader interface so it is possible to stream result
-io.Copy(myReader, res)
+// result implements the io.Reader interface, so you can stream it
+io.Copy(myWriter, pdfRes)
 
 // get conversion cost
-cost, err := res.Cost()
+cost, err := pdfRes.Cost()
 ```
 
 #### Convert remote file
@@ -74,7 +74,7 @@ pptxRes := convertapi.ConvDef("pptx", "pdf",
 #### Additional conversion parameters
 
 ConvertAPI accepts extra conversion parameters depending on selected file formats.
-All conversion parameters and explanations can be found [here](https://www.convertapi.com/conversions).
+All conversion parameters and explanations can be found [here](https://www.convertapi.com/api).
 
 ```go
 jpgRes := convertapi.ConvDef("pdf", "jpg",
@@ -88,7 +88,7 @@ jpgRes := convertapi.ConvDef("pdf", "jpg",
 
 ### User information
 
-You can always check your remaining seconds programmatically by fetching [user information](https://www.convertapi.com/doc/user).
+You can always check your conversion counts programmatically by fetching [user information](https://www.convertapi.com/docs/user-information).
 
 ```go
 user, err := convertapi.UserInfo(nil)
@@ -99,7 +99,7 @@ conversionsConsumed := user.ConversionsConsumed
 ### Alternative domain
 
 How to set an alternative domain can be found in the [advanced example](https://github.com/ConvertAPI/convertapi-library-go/blob/main/examples/advanced/main.go).
-Dedicated to the region [domain list](https://www.convertapi.com/doc/servers-location).
+Dedicated to the region [domain list](https://www.convertapi.com/docs/servers-location).
 
 ### More examples
 
@@ -127,14 +127,13 @@ package main
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/ConvertAPI/convertapi-go/pkg"
 	"github.com/ConvertAPI/convertapi-go/pkg/config"
 )
 
 func main() {
-	config.Default = config.NewDefault(os.Getenv("api-token"))
+	config.Default = config.NewDefault("api-token")
 
 	if file, errs := convertapi.ConvertPath("test.docx", "/tmp/result.pdf"); errs == nil {
 		fmt.Println("PDF file saved to: ", file.Name())
@@ -145,7 +144,7 @@ func main() {
 ```
 
 This is the bare-minimum to convert a file using the ConvertAPI client, but you can do a great deal more with the ConvertAPI Go library.
-Take special note that you should replace `api-token` with the token you obtained in item two of the pre-requisites.
+Replace `api-token` with your API token from https://www.convertapi.com/a/authentication.
 
 
 ### Conversion Without Temporarily Storing Files on the ConvertAPI File Server
@@ -161,5 +160,5 @@ Using `multipart` is much more efficient compared to JSON with base64 encoding.
 Please leave all comments, bugs, requests, and issues on the Issues page. We'll respond to your request ASAP!
 
 ### License
-The ConvertAPI Go Library is licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php "Read more about the MIT license form") license.
+The ConvertAPI Go Library is licensed under the [MIT](https://opensource.org/licenses/MIT) license.
 Refer to the [LICENSE](https://github.com/ConvertAPI/convertapi-library-go/blob/main/LICENSE.txt) file for more information.
